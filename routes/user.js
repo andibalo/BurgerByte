@@ -4,6 +4,32 @@ const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { validateToken } = require("../middlewares/auth");
+
+//@Route        /api/user/me
+//@Desc         get current user
+//@Access       private
+
+router.get("/me", validateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        status: "error",
+        message: "user not found",
+      });
+    }
+
+    res.json({
+      status: "success",
+      data: user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("server error");
+  }
+});
 
 //@Route        /api/user/
 //@Desc         Signup a user

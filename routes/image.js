@@ -24,21 +24,19 @@ const upload = multer({ storage, limits: { fileSize: maxSize } });
 
 router.post(
   "/",
-  validateToken,
-  validateAdmin,
+  // validateToken,
+  // validateAdmin,
   upload.single("image"),
   async (req, res) => {
     try {
       const image = await new Image({
         name: req.file.filename,
-        image_url: `${req.file.destination.split("./")[1]}/${
-          req.file.filename
-        }`,
+        image_url: `uploads/${req.file.filename}`,
       }).save();
 
       res.json({
         status: "success",
-        data: image.image_url,
+        data: image,
       });
     } catch (error) {
       console.log(error);
@@ -50,11 +48,12 @@ router.post(
 //@Desc         delete an image
 //@Access       Admin
 
-router.delete("/:id", validateToken, validateAdmin, async (req, res) => {
+//validateToken, validateAdmin,
+router.delete("/:id", async (req, res) => {
   try {
     const image = await Image.findById(req.params.id);
 
-    fs.unlink(`./${image.image_url}`, async (err) => {
+    fs.unlink(`./client/public/${image.image_url}`, async (err) => {
       if (err) {
         return res.status(500).json({
           status: "error",
