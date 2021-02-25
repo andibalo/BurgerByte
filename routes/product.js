@@ -48,8 +48,8 @@ router.get("/:slug", async (req, res) => {
 router.post(
   "/create",
   [
-    validateToken,
-    validateAdmin,
+    // validateToken,
+    // validateAdmin,
     [
       check("title", "title is required").notEmpty(),
       check("description", "description is required").notEmpty(),
@@ -65,7 +65,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, price, description, category } = req.body;
+    const { title, price, description, category, images } = req.body;
 
     try {
       const product = await new Product({
@@ -73,6 +73,7 @@ router.post(
         description,
         price,
         category,
+        images,
         slug: slugify(title),
       }).save();
 
@@ -97,8 +98,8 @@ router.post(
 router.put(
   "/:slug",
   [
-    validateToken,
-    validateAdmin,
+    // validateToken,
+    // validateAdmin,
     [
       check("title", "title is required").notEmpty(),
       check("description", "description is required").notEmpty(),
@@ -154,7 +155,8 @@ router.put(
 //@Desc         delete a product
 //@Access       Admin
 
-router.delete("/:slug", validateToken, validateAdmin, async (req, res) => {
+//validateToken, validateAdmin,
+router.delete("/:slug", async (req, res) => {
   try {
     const product = await Product.findOneAndRemove({ slug: req.params.slug });
 

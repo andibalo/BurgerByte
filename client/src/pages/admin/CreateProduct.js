@@ -4,12 +4,20 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import styled from "styled-components";
 import { Input, Select, InputNumber, Upload, message, Button } from "antd";
 import axiosInstance from "../../utils/axiosInstance";
-import axios from "axios";
+
 const { Option } = Select;
 const { TextArea } = Input;
 
 const StyledAdminContainer = styled.div`
   flex: 1;
+
+  .ant-upload-list-item-name {
+    color: var(--white) !important;
+  }
+
+  .ant-upload-list-item-card-actions svg {
+    color: var(--danger) !important;
+  }
 `;
 
 const CreateProduct = (props) => {
@@ -21,18 +29,54 @@ const CreateProduct = (props) => {
     price: 0,
     images: [],
   });
+  const [loading, setLoading] = useState(false);
 
   const { title, description, category, price, images } = formData;
 
+  const uploadActionUrl = `${process.env.REACT_APP_API_URL}/api/image`;
+
   const handleDeleteImg = async (id) => {
-    const res = await axios.delete(`${process.env.BASE_URL}/api/image/${id}`);
+    const res = await axiosInstance.delete(`/api/image/${id}`);
 
     console.log("REMOVE RESPONSE", res);
   };
 
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    try {
+      const res = await axiosInstance.post("/api/product/create", formData);
+
+      console.log("CREATE PRODUCT", res);
+
+      setFormData({
+        title: "",
+        description: "",
+        category: "burger",
+        price: 0,
+        images: [],
+      });
+
+      setFileList([]);
+
+      setLoading(false);
+    } catch (error) {
+      //console.log(error);
+      setFormData({
+        title: "",
+        description: "",
+        category: "burger",
+        price: 0,
+        images: [],
+      });
+
+      setLoading(false);
+    }
+  };
+
   const uploadProps = {
     name: "image",
-    action: `${process.env.BASE_URL}/api/image`,
+    action: uploadActionUrl,
     headers: {
       authorization: "multipart/form-data",
     },
@@ -102,6 +146,7 @@ const CreateProduct = (props) => {
           />
           <Select
             defaultValue="burger"
+            value={category}
             size="large"
             className="block w-full  mb-5 rounded-md"
             onChange={(value) => setFormData({ ...formData, category: value })}
@@ -127,7 +172,16 @@ const CreateProduct = (props) => {
           >
             <Button>Click to Upload</Button>
           </Upload>
-          ,{JSON.stringify(formData)}
+          <Button
+            className=" mt-5"
+            size="large"
+            type="primary"
+            onClick={handleSubmit}
+            loading={loading}
+          >
+            Create
+          </Button>
+          {JSON.stringify(formData)}
         </StyledAdminContainer>
       </div>
     </div>
