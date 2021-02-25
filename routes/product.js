@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:slug", async (req, res) => {
   try {
-    const product = await Product.find({ _id: req.params.slug });
+    const product = await Product.findOne({ slug: req.params.slug });
 
     res.json({
       status: "success",

@@ -4,6 +4,7 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import styled from "styled-components";
 import { Input, Select, InputNumber, Upload, message, Button } from "antd";
 import axiosInstance from "../../utils/axiosInstance";
+import { AiOutlineCamera } from "@react-icons/all-files/ai/AiOutlineCamera";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -26,10 +27,11 @@ const CreateProduct = (props) => {
     title: "",
     description: "",
     category: "burger",
-    price: 0,
+    price: "",
     images: [],
   });
   const [loading, setLoading] = useState(false);
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const { title, description, category, price, images } = formData;
 
@@ -58,7 +60,7 @@ const CreateProduct = (props) => {
       });
 
       setFileList([]);
-
+      setIsImageUploaded(false);
       setLoading(false);
     } catch (error) {
       //console.log(error);
@@ -108,6 +110,8 @@ const CreateProduct = (props) => {
           },
           ...fileList,
         ]);
+
+        setIsImageUploaded(true);
       } else if (info.file.status === "error") {
         message.error(`${info.file.name} file upload failed.`);
       }
@@ -127,13 +131,29 @@ const CreateProduct = (props) => {
       <div className="flex flex-grow">
         <AdminSidebar page="createProduct" />
         <StyledAdminContainer className="p-16 ">
+          <Upload
+            accept="image/*"
+            maxCount={3}
+            listType="picture"
+            defaultFileList={[...fileList]}
+            {...uploadProps}
+          >
+            <Button
+              className="flex items-center"
+              icon={<AiOutlineCamera className="mr-2 text-lg" />}
+            >
+              Upload Image
+            </Button>
+          </Upload>
+
           <Input
             placeholder="Product Name"
             size="large"
             name="title"
             onChange={(e) => handleChange(e)}
             value={title}
-            className="block w-full p-3 mb-5 rounded-md"
+            className="block w-full p-3 my-5 rounded-md"
+            disabled={!isImageUploaded}
           />
           <TextArea
             name="description"
@@ -143,11 +163,13 @@ const CreateProduct = (props) => {
             value={description}
             className="block w-full p-3 mb-5 rounded-md"
             placeholder="Product Description"
+            disabled={!isImageUploaded}
           />
           <Select
             defaultValue="burger"
             value={category}
             size="large"
+            disabled={!isImageUploaded}
             className="block w-full  mb-5 rounded-md"
             onChange={(value) => setFormData({ ...formData, category: value })}
           >
@@ -156,6 +178,7 @@ const CreateProduct = (props) => {
             <Option value="drink">Drink</Option>
           </Select>
           <InputNumber
+            disabled={!isImageUploaded}
             placeholder="Product Price"
             value={price}
             min={1}
@@ -163,25 +186,17 @@ const CreateProduct = (props) => {
             size="large"
             onChange={(value) => setFormData({ ...formData, price: value })}
           />
-          <Upload
-            accept="image/*"
-            maxCount={3}
-            listType="picture"
-            defaultFileList={[...fileList]}
-            {...uploadProps}
-          >
-            <Button>Click to Upload</Button>
-          </Upload>
+
           <Button
-            className=" mt-5"
+            disabled={!isImageUploaded}
             size="large"
+            className="rounded-md"
             type="primary"
             onClick={handleSubmit}
             loading={loading}
           >
-            Create
+            Create Product
           </Button>
-          {JSON.stringify(formData)}
         </StyledAdminContainer>
       </div>
     </div>

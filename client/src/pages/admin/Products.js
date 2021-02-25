@@ -4,6 +4,7 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import ProductCard from "../../components/ProductCard";
 import styled from "styled-components";
 import axiosInstance from "../../utils/axiosInstance";
+import { Spin } from "antd";
 
 const StyledAdminContainer = styled.div`
   flex: 1;
@@ -17,13 +18,28 @@ const StyledAdminContainer = styled.div`
 
 const Products = (props) => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleFetchProducts = async () => {
+    setLoading(true);
     try {
       const res = await axiosInstance.get(`/api/product/`);
 
       console.log(res);
       setProducts(res.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = async (slug) => {
+    try {
+      const res = await axiosInstance.delete(`/api/product/${slug}`);
+
+      console.log("Delete Product Res", res);
+      handleFetchProducts();
     } catch (error) {
       console.log(error);
     }
@@ -39,11 +55,19 @@ const Products = (props) => {
       <div className="flex flex-grow">
         <AdminSidebar page="products" />
         <StyledAdminContainer className="p-16 ">
-          <div className="productsGrid ">
-            {products &&
-              products.length > 0 &&
-              products.map((product) => <ProductCard product={product} />)}
-          </div>
+          <Spin spinning={loading} size="large" tip="Loading...">
+            <div className="productsGrid ">
+              {products &&
+                products.length > 0 &&
+                products.map((product) => (
+                  <ProductCard
+                    key={product.slug}
+                    product={product}
+                    handleDeleteProduct={handleDeleteProduct}
+                  />
+                ))}
+            </div>
+          </Spin>
         </StyledAdminContainer>
       </div>
     </div>
