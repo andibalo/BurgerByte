@@ -15,7 +15,7 @@ const App = (props) => {
   return (
     <>
       <Route exact path="/" component={Home} />
-      <AnimatePresence>
+      <AnimatePresence exitBeforeEnter>
         <Switch location={location} key={location.key}>
           <Route exact path="/cart" component={ShoppingCart} />
           <Route exact path="/checkout" component={Checkout} />

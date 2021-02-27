@@ -8,10 +8,14 @@ const StyledButton = styled.button`
   border-radius: var(--border-radius);
 `;
 
-const Button = ({ title, className, icon, borderless, href }) => {
+const Button = ({ title, className, icon, borderless, href, onClick }) => {
   if (href) {
     return (
-      <StyledButton borderless={borderless} className={` ${className}`}>
+      <StyledButton
+        onClick={onClick}
+        borderless={borderless}
+        className={` ${className}`}
+      >
         <Link
           to={href}
           className={`px-8 py-2  text-primary flex items-center justify-center`}
@@ -25,6 +29,7 @@ const Button = ({ title, className, icon, borderless, href }) => {
 
   return (
     <StyledButton
+      onClick={onClick}
       borderless={borderless}
       className={`px-8 py-2 flex items-center text-primary ${className}`}
     >

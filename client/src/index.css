@@ -16,6 +16,11 @@
   --border-radius: 10px;
 }
 
+html,
+body {
+  overflow-x: hidden !important;
+}
+
 h1,
 h2,
 h3,
