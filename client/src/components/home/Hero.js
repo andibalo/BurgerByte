@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-
 import styled from "styled-components";
 import { AiOutlineArrowDown } from "@react-icons/all-files/ai/AiOutlineArrowDown";
 import Button from "../Button";
@@ -33,7 +32,10 @@ const StyledHeroContainer = styled.div`
 const Hero = (props) => {
   return (
     <StyledHeroContainer className="h-full">
-      <div className="heroContent min-h-screen flex justify-center items-center ">
+      <div
+        className="heroContent min-h-screen flex justify-center items-center "
+        id="test"
+      >
         <div className="heroText flex flex-col items-center">
           <h1 className="text-white text-8xl mb-5">
             Burger<span className="text-primary">Byte</span>
@@ -43,6 +45,7 @@ const Hero = (props) => {
           </h3>
           <Button title="View Menu" />
         </div>
+
         <AiOutlineArrowDown className="text-primary text-4xl absolute downArrow" />
       </div>
     </StyledHeroContainer>

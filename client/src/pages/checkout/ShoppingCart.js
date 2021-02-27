@@ -41,22 +41,59 @@ const StyledStepTimeline = styled.div`
     height: 50px;
     width: 50px;
     border-radius: 50%;
+    position: relative;
+    z-index: 1;
   }
 
   .steps-inner {
     max-width: 500px;
   }
+
+  .timeline-line {
+    height: 5px;
+    border: none;
+    top: 30%;
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      background: var(--primary);
+      width: 0;
+      height: 100%;
+    }
+  }
 `;
 
-const containerVariants = {};
-
 const ShoppingCart = (props) => {
+  const containerVariants = {
+    hidden: {
+      x: "-100vw",
+    },
+    visible: {
+      x: 0,
+      transition: {
+        delay: 0.5,
+      },
+    },
+
+    exit: {
+      x: "-100vw",
+      transition: {
+        ease: "easeInOut",
+      },
+    },
+  };
+
   return (
     <StyledShoppingCartContainer className="bg-secondary  min-h-screen">
       <Navbar isUserNav fixed={false} />
       <div className="container py-16 ">
-        <StyledStepTimeline className="text-white mb-10 ">
-          <div className="steps-inner mx-auto">
+        <StyledStepTimeline className="text-white mb-10  ">
+          <div className="steps-inner mx-auto relative">
             <div className="steps-inner flex justify-between ">
               <div className="flex flex-col items-center">
                 <div className="circle flex bg-primary items-center justify-center mb-3">
@@ -79,9 +116,16 @@ const ShoppingCart = (props) => {
                 <h4 className="text-grey font-dosis font-bold">Finish</h4>
               </div>
             </div>
+            <hr className="bg-grey timeline-line absolute " />
           </div>
         </StyledStepTimeline>
-        <div className="flex cartRow ">
+        <motion.div
+          className="flex cartRow "
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
           <div className="bg-secondary-light cart p-8">
             <h3 className="text-white text-2xl font-dosis font-bold">
               Shopping Cart
@@ -158,11 +202,16 @@ const ShoppingCart = (props) => {
               <Button
                 title="Proceed To Checkout"
                 className=" mt-auto"
-                href="/checkout"
+                href={{
+                  pathname: "/checkout",
+                  state: {
+                    fromCart: true,
+                  },
+                }}
               />
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </StyledShoppingCartContainer>
   );
