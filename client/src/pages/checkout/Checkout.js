@@ -81,6 +81,42 @@ const Checkout = ({ history }) => {
     },
   };
 
+  const circleVariants = {
+    hidden: {
+      backgroundColor: "var(--grey)",
+    },
+    visible: {
+      backgroundColor: "var(--primary)",
+      transition: {
+        delay: 0.3,
+      },
+    },
+  };
+
+  const numberVariants = {
+    hidden: {
+      color: "var(--grey-dark)",
+    },
+    visible: {
+      color: "var(--white)",
+      transition: {
+        delay: 0.3,
+      },
+    },
+  };
+
+  const textVariants = {
+    hidden: {
+      color: "var(--grey)",
+    },
+    visible: {
+      color: "var(--primary)",
+      transition: {
+        delay: 0.3,
+      },
+    },
+  };
+
   const handleReturn = () => {
     setIsGoingBack(true);
     history.goBack();
@@ -94,18 +130,35 @@ const Checkout = ({ history }) => {
           <div className="steps-inner mx-auto relative">
             <div className="steps-inner flex justify-between ">
               <div className="flex flex-col items-center">
-                <div className="circle flex bg-grey items-center justify-center mb-3">
-                  <p className="font-bold text-2xl text-grey-dark">1</p>
+                <div className="circle flex bg-primary items-center justify-center mb-3">
+                  <p className="font-bold text-2xl text-white">1</p>
                 </div>
-                <h4 className="text-grey  font-dosis font-bold">
+                <h4 className="text-primary font-dosis font-bold">
                   Shopping Cart
                 </h4>
               </div>
               <div className="flex flex-col items-center">
-                <div className="circle flex  bg-primary items-center justify-center mb-3">
-                  <p className="font-bold text-2xl  text-white">2</p>
-                </div>
-                <h4 className="font-dosis font-bold text-primary ">Checkout</h4>
+                <motion.div
+                  variants={circleVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="circle flex  bg-primary items-center justify-center mb-3"
+                >
+                  <motion.p
+                    variants={numberVariants}
+                    className="font-bold text-2xl  text-white"
+                  >
+                    2
+                  </motion.p>
+                </motion.div>
+                <motion.h4
+                  variants={textVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="font-dosis font-bold text-primary "
+                >
+                  Checkout
+                </motion.h4>
               </div>
               <div className="flex flex-col items-center">
                 <div className="circle flex bg-grey items-center justify-center mb-3">

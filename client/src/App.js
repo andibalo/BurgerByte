@@ -10,29 +10,36 @@ import ShoppingCart from "./pages/checkout/ShoppingCart";
 import FinishCheckout from "./pages/checkout/FinishCheckout";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Modal from "./components/Modal";
 
 const App = (props) => {
   const location = useLocation();
 
   return (
     <>
-      <Route exact path="/" component={Home} />
-      <AnimatePresence exitBeforeEnter>
-        <Switch location={location} key={location.key}>
-          <Route exact path="/cart" component={ShoppingCart} />
-          <Route exact path="/checkout" component={Checkout} />
-          <Route exact path="/checkout/finish" component={FinishCheckout} />
-          <Route exact path="/admin/products" component={Products} />
-          <Route exact path="/admin/create-product" component={CreateProduct} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route
-            exact
-            path="/admin/edit-product/:slug"
-            component={EditProduct}
-          />
-        </Switch>
-      </AnimatePresence>
+      <Modal>
+        <Route exact path="/" component={Home} />
+        <AnimatePresence exitBeforeEnter>
+          <Switch location={location} key={location.key}>
+            <Route exact path="/cart" component={ShoppingCart} />
+            <Route exact path="/checkout" component={Checkout} />
+            <Route exact path="/checkout/finish" component={FinishCheckout} />
+            <Route exact path="/admin/products" component={Products} />
+            <Route
+              exact
+              path="/admin/create-product"
+              component={CreateProduct}
+            />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route
+              exact
+              path="/admin/edit-product/:slug"
+              component={EditProduct}
+            />
+          </Switch>
+        </AnimatePresence>
+      </Modal>
     </>
   );
 };

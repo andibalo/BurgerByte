@@ -5,6 +5,7 @@ import { AiOutlineLogout } from "@react-icons/all-files/ai/AiOutlineLogout";
 import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
 import { AiOutlineShoppingCart } from "@react-icons/all-files/ai/AiOutlineShoppingCart";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 
 const StyledNavbar = styled.div`
   z-index: 10;
@@ -32,8 +33,11 @@ const Navbar = ({ isUserNav, fixed = true }) => {
               </li>
             </ul>
             <div className="flex items-center">
-              <AiOutlineShoppingCart className="text-white text-2xl mr-6" />
-              <Button title="Login" />
+              <Link to="/cart">
+                <AiOutlineShoppingCart className="text-white text-2xl mr-6" />
+              </Link>
+
+              <Button title="Login" href="/login" />
             </div>
           </div>
         </div>

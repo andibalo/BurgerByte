@@ -75,6 +75,9 @@ const ShoppingCart = (props) => {
     },
     visible: {
       x: 0,
+      transition: {
+        delay: 0.5,
+      },
     },
 
     exit: {
