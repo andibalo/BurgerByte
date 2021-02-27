@@ -10,10 +10,12 @@ import {
   message,
   Button as AntButton,
   Spin,
+  Image,
 } from "antd";
 import axiosInstance from "../../utils/axiosInstance";
 import { AiOutlineCamera } from "@react-icons/all-files/ai/AiOutlineCamera";
 import { AiOutlineArrowLeft } from "@react-icons/all-files/ai/AiOutlineArrowLeft";
+import { AiFillCloseCircle } from "@react-icons/all-files/ai/AiFillCloseCircle";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -27,6 +29,11 @@ const StyledAdminContainer = styled.div`
 
   .ant-upload-list-item-card-actions svg {
     color: var(--danger) !important;
+  }
+
+  .deleteImageIcon {
+    top: -10px;
+    right: -10px;
   }
 `;
 
@@ -81,9 +88,18 @@ const EditProduct = ({ match, history }) => {
   }, []);
 
   const handleDeleteImg = async (id) => {
-    const res = await axiosInstance.delete(`/api/image/${id}`);
+    setLoading(true);
 
-    console.log("REMOVE RESPONSE", res);
+    try {
+      const res = await axiosInstance.delete(`/api/image/${id}`);
+      console.log("REMOVE RESPONSE", res);
+
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async () => {
@@ -146,7 +162,7 @@ const EditProduct = ({ match, history }) => {
 
         setFormData({
           ...formData,
-          images: [data.image_url, ...images],
+          images: [{ id: data._id, image_url: data.image_url }, ...images],
         });
         setFileList([
           {
@@ -188,8 +204,20 @@ const EditProduct = ({ match, history }) => {
                 icon={<AiOutlineArrowLeft className="text-lg" />}
               />
             </div>
-
+            <Image.PreviewGroup>
+              {formData.images &&
+                formData.images.length > 0 &&
+                formData.images.map((image) => (
+                  <div className="relative inline-block ">
+                    <Image width={200} src={`/${image.image_url}`} />
+                    <button onClick={() => handleDeleteImg(image.id)}>
+                      <AiFillCloseCircle className="text-2xl text-danger absolute  deleteImageIcon" />
+                    </button>
+                  </div>
+                ))}
+            </Image.PreviewGroup>
             <Upload
+              className="block mt-5"
               accept="image/*"
               maxCount={3}
               listType="picture"

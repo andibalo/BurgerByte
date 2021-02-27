@@ -10,10 +10,10 @@ const StyledNavbar = styled.div`
   z-index: 10;
 `;
 
-const Navbar = ({ isUserNav }) => {
+const Navbar = ({ isUserNav, fixed = true }) => {
   if (isUserNav) {
     return (
-      <StyledNavbar className="container py-5 fixed">
+      <StyledNavbar className={`container py-5 ${fixed && "fixed"}`}>
         <div className="flex justify-between items-center">
           <Brand logoOnly />
           <div className="flex items-center">

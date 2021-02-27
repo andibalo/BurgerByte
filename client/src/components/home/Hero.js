@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import Navbar from "../Navbar";
+
 import styled from "styled-components";
 import { AiOutlineArrowDown } from "@react-icons/all-files/ai/AiOutlineArrowDown";
 import Button from "../Button";
@@ -33,7 +33,6 @@ const StyledHeroContainer = styled.div`
 const Hero = (props) => {
   return (
     <StyledHeroContainer className="h-full">
-      <Navbar isUserNav />
       <div className="heroContent min-h-screen flex justify-center items-center ">
         <div className="heroText flex flex-col items-center">
           <h1 className="text-white text-8xl mb-5">

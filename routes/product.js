@@ -115,7 +115,7 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, price, description, category } = req.body;
+    const { title, price, description, category, images } = req.body;
 
     try {
       const product = await Product.findOneAndUpdate(
@@ -125,6 +125,7 @@ router.put(
           description,
           price,
           category,
+          images,
           slug: slugify(title),
         },
         { new: true }

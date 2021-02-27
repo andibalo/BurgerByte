@@ -30,7 +30,7 @@ const ProductCard = ({ product, handleDeleteProduct }) => {
         <div className="cardContent text-center">
           {images.length > 0 ? (
             <div className="foodImageWrapper mx-auto mb-5">
-              <img src={`/${images[0]}`} className="food-image" />
+              <img src={`/${images[0].image_url}`} className="food-image" />
             </div>
           ) : (
             <FaBeer className="block text-primary mx-auto text-6xl mb-5" />
