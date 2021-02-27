@@ -37,7 +37,6 @@ const Burgers = (props) => {
                 <p className="text-danger font-bold text-2xl mb-5">Rp 35.000</p>
                 <Button title="Add To Cart" />
               </div>
-
               <div className="burgerImageCont ml-auto">
                 <img src={Burger1} alt="burger1" className="burgerImage" />
               </div>
