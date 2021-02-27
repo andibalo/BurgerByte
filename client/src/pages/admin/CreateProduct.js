@@ -98,7 +98,7 @@ const CreateProduct = (props) => {
 
         setFormData({
           ...formData,
-          images: [data.image_url, ...images],
+          images: [{ id: data._id, image_url: data.image_url }, ...images],
         });
         setFileList([
           {

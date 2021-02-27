@@ -11,11 +11,11 @@ const StyledButton = styled.button`
 const Button = ({ title, className, icon, borderless, href }) => {
   if (href) {
     return (
-      <StyledButton
-        borderless={borderless}
-        className={`px-8 py-2  text-primary ${className}`}
-      >
-        <Link to={href} className="flex items-center">
+      <StyledButton borderless={borderless} className={` ${className}`}>
+        <Link
+          to={href}
+          className={`px-8 py-2  text-primary flex items-center justify-center`}
+        >
           {icon && <span className="mr-3">{icon}</span>}
           {title}
         </Link>

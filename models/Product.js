@@ -14,11 +14,11 @@ const productSchema = new mongoose.Schema(
       lowercase: true,
       index: true,
     },
-    short_description: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    // short_description: {
+    //   type: String,
+    //   required: true,
+    //   trim: true,
+    // },
     description: {
       type: String,
       required: true,
