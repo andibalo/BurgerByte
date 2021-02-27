@@ -8,6 +8,8 @@ import EditProduct from "./pages/admin/EditProduct";
 import Checkout from "./pages/checkout/Checkout";
 import ShoppingCart from "./pages/checkout/ShoppingCart";
 import FinishCheckout from "./pages/checkout/FinishCheckout";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 
 const App = (props) => {
   const location = useLocation();
@@ -22,6 +24,8 @@ const App = (props) => {
           <Route exact path="/checkout/finish" component={FinishCheckout} />
           <Route exact path="/admin/products" component={Products} />
           <Route exact path="/admin/create-product" component={CreateProduct} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
           <Route
             exact
             path="/admin/edit-product/:slug"
