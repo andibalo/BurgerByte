@@ -6,8 +6,8 @@ const StyledSection = styled.div`
   padding-bottom: 75px;
 `;
 
-const Section = ({ children }) => {
-  return <StyledSection className="bg-secondary">{children}</StyledSection>;
+const Section = ({ children, className }) => {
+  return <StyledSection className={`bg-secondary ${className}`}>{children}</StyledSection>;
 };
 
 export default Section;
