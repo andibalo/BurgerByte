@@ -4,6 +4,7 @@ import Drinks from "../components/home/Drinks";
 import Hero from "../components/home/Hero";
 import Sides from "../components/home/Sides";
 import Navbar from "../components/Navbar";
+import Team from "../components/home/Team";
 
 const Home = (props) => {
   return (
@@ -13,6 +14,7 @@ const Home = (props) => {
       <Burgers />
       <Sides />
       <Drinks />
+      <Team />
     </div>
   );
 };
