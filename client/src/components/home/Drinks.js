@@ -13,27 +13,24 @@ const StyledDrinksCard = styled.div`
   .inner-card {
     min-height: 400px;
     border-radius: var(--border-radius);
-    width :300px;
+    width: 300px;
   }
 
   .drinksImageCont {
     width: 150px;
   }
 
-  .blu{
+  .blu {
     height: 6px;
   }
-
-
 `;
 
 const Drinks = (props) => {
   return (
-    <Section>
+    <Section id="drinks">
       <SectionHeader title="Drinks" />
       <div className="container">
         <div className="flex flex-wrap justify-center">
-
           <StyledDrinksCard className="p-10 shadow-xl ">
             <div className="bg-secondary-light p-8 inner-card">
               <div className="drinksImageCont -mt-16 ml-12">
@@ -42,12 +39,20 @@ const Drinks = (props) => {
               <div>
                 <h1 className="text-white text-center text-dosis text-bold text-2xl mt-8 mb-2">
                   Kruskal Milkshake
-                </h1><hr className="blu bg-primary"/>
-                <h1 className="text-white text-center font-dosis text2md mt-6 mb-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus erat mattis ligula luctus, nec facilisis orci porta. Morbi a scelerisque massa. Phasellus at ultrices dolor. Duis ac bibendum est. Sed rhoncus est elit, blandit tincidunt mi bibendum in. Mauris pretium dolor vel ultricies sagittis. Aenean eget magna ac lacus ultricies varius.
                 </h1>
-                <p className="text-danger font-bold text-center text-2xl mb-5">Rp 22.000</p>
-                <div className="text-center"> 
+                <hr className="blu bg-primary" />
+                <h1 className="text-white text-center font-dosis text2md mt-6 mb-2">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  maximus erat mattis ligula luctus, nec facilisis orci porta.
+                  Morbi a scelerisque massa. Phasellus at ultrices dolor. Duis
+                  ac bibendum est. Sed rhoncus est elit, blandit tincidunt mi
+                  bibendum in. Mauris pretium dolor vel ultricies sagittis.
+                  Aenean eget magna ac lacus ultricies varius.
+                </h1>
+                <p className="text-danger font-bold text-center text-2xl mb-5">
+                  Rp 22.000
+                </p>
+                <div className="text-center">
                   <Button title="Add To Cart" />
                 </div>
               </div>
@@ -61,12 +66,20 @@ const Drinks = (props) => {
               <div>
                 <h1 className="text-white text-center text-dosis text-bold text2xl mt-8 mb-2">
                   Prims Sweet Tea
-                </h1><hr className="blu bg-primary"/>
-                <h1 className="text-white text-center font-dosis text2md mt-6 mb-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus erat mattis ligula luctus, nec facilisis orci porta. Morbi a scelerisque massa. Phasellus at ultrices dolor. Duis ac bibendum est. Sed rhoncus est elit, blandit tincidunt mi bibendum in. Mauris pretium dolor vel ultricies sagittis. Aenean eget magna ac lacus ultricies varius.
                 </h1>
-                <p className="text-danger font-bold text-center text-2xl mb-5">Rp 12.000</p>
-                <div className="text-center"> 
+                <hr className="blu bg-primary" />
+                <h1 className="text-white text-center font-dosis text2md mt-6 mb-2">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  maximus erat mattis ligula luctus, nec facilisis orci porta.
+                  Morbi a scelerisque massa. Phasellus at ultrices dolor. Duis
+                  ac bibendum est. Sed rhoncus est elit, blandit tincidunt mi
+                  bibendum in. Mauris pretium dolor vel ultricies sagittis.
+                  Aenean eget magna ac lacus ultricies varius.
+                </h1>
+                <p className="text-danger font-bold text-center text-2xl mb-5">
+                  Rp 12.000
+                </p>
+                <div className="text-center">
                   <Button title="Add To Cart" />
                 </div>
               </div>
@@ -80,18 +93,25 @@ const Drinks = (props) => {
               <div>
                 <h1 className="text-white text-center text-dosis text-bold text2xl mt-8 mb-2">
                   Dynamic Boba
-                </h1><hr className="blu bg-primary"/>
-                <h1 className="text-white text-center font-dosis text2md mt-6 mb-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus erat mattis ligula luctus, nec facilisis orci porta. Morbi a scelerisque massa. Phasellus at ultrices dolor. Duis ac bibendum est. Sed rhoncus est elit, blandit tincidunt mi bibendum in. Mauris pretium dolor vel ultricies sagittis. Aenean eget magna ac lacus ultricies varius.
                 </h1>
-                <p className="text-danger font-bold text-center text-2xl mb-5">Rp 18.000</p>
-                <div className="text-center"> 
+                <hr className="blu bg-primary" />
+                <h1 className="text-white text-center font-dosis text2md mt-6 mb-2">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  maximus erat mattis ligula luctus, nec facilisis orci porta.
+                  Morbi a scelerisque massa. Phasellus at ultrices dolor. Duis
+                  ac bibendum est. Sed rhoncus est elit, blandit tincidunt mi
+                  bibendum in. Mauris pretium dolor vel ultricies sagittis.
+                  Aenean eget magna ac lacus ultricies varius.
+                </h1>
+                <p className="text-danger font-bold text-center text-2xl mb-5">
+                  Rp 18.000
+                </p>
+                <div className="text-center">
                   <Button title="Add To Cart" />
                 </div>
               </div>
             </div>
           </StyledDrinksCard>
-
         </div>
       </div>
     </Section>

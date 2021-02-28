@@ -87,8 +87,10 @@ router.post(
       res.json({
         status: "success",
         data: {
-          user,
-          token,
+          user: {
+            ...user,
+            token,
+          },
         },
       });
     } catch (error) {
