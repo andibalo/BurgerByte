@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Brand from "./Brand";
 import { AiOutlineLogout } from "@react-icons/all-files/ai/AiOutlineLogout";
@@ -12,9 +12,32 @@ const StyledNavbar = styled.div`
 `;
 
 const Navbar = ({ isUserNav, fixed = true }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 20) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    const listener = window.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      window.removeEventListener("scroll", listener, true);
+    };
+  }, []);
+
   if (isUserNav) {
     return (
-      <StyledNavbar className={`container py-5 ${fixed && "fixed"}`}>
+      <StyledNavbar
+        scrolled={isScrolled}
+        className={`container py-5 transition duration-300 ${
+          fixed && "fixed"
+        } ${isScrolled && "bg-secondary-light shadow-xl"}`}
+      >
         <div className="flex justify-between items-center">
           <Brand logoOnly />
           <div className="flex items-center">

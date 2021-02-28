@@ -16,9 +16,8 @@
   --border-radius: 10px;
 }
 
-html,
 body {
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 
 h1,
