@@ -46,8 +46,15 @@ const Hero = (props) => {
           </h3>
           <Button title="View Menu" />
         </div>
-
-        <AiOutlineArrowDown className="text-primary text-4xl absolute downArrow" />
+        <Link
+          to="burgers"
+          className="text-primary text-4xl absolute downArrow"
+          smooth={true}
+          duration={500}
+          offset={-30}
+        >
+          <AiOutlineArrowDown />
+        </Link>
       </div>
     </StyledHeroContainer>
   );

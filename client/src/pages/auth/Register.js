@@ -3,7 +3,9 @@ import Navbar from "../../components/Navbar";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import { Input } from "antd";
-import axiosInstance from "../../utils/axiosInstance";
+import { connect } from "react-redux";
+import { register } from "../../actions/auth";
+import { Redirect } from "react-router-dom";
 
 const StyledRegisterContainer = styled.div`
   .main {
@@ -22,8 +24,7 @@ const StyledRegisterContainer = styled.div`
   }
 `;
 
-const Register = (props) => {
-  const [isLoading, setIsLoading] = useState(false);
+const Register = ({ register, loading, isAuthenticated, userRole }) => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -42,35 +43,18 @@ const Register = (props) => {
   const handleFormSubmit = async () => {
     console.log(formData);
 
-    setIsLoading(true);
+    register(username, email, password);
 
-    try {
-      const res = await axiosInstance.post("/api/user/register", {
-        username,
-        email,
-        password,
-      });
-
-      setFormData({
-        username: "",
-        email: "",
-        password: "",
-      });
-
-      console.log(res);
-
-      setIsLoading(false);
-    } catch (error) {
-      setFormData({
-        username: "",
-        email: "",
-        password: "",
-      });
-      console.log(error);
-
-      setIsLoading(false);
-    }
+    setFormData({
+      username: "",
+      email: "",
+      password: "",
+    });
   };
+
+  if (isAuthenticated) {
+    return <Redirect to={`${userRole === "user" ? "/" : "/admin/products"}`} />;
+  }
 
   return (
     <StyledRegisterContainer className="bg-secondary min-h-screen">
@@ -112,9 +96,9 @@ const Register = (props) => {
 
               <Button
                 title="Register"
-                className="bg-secondary-light text-white w-full justify-center"
+                className="bg-secondary-light text-white w-full justify-center hover:bg-secondary"
                 onClick={handleFormSubmit}
-                loading={isLoading}
+                loading={loading}
               />
             </div>
           </div>
@@ -130,4 +114,10 @@ const Register = (props) => {
   );
 };
 
-export default Register;
+const mapStateToProps = (state) => ({
+  loading: state.auth.loading,
+  isAuthenticated: state.auth.isAuthenticated,
+  userRole: state.auth.user?.role,
+});
+
+export default connect(mapStateToProps, { register })(Register);

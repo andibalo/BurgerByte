@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Home from "./pages/Home";
@@ -11,35 +11,53 @@ import FinishCheckout from "./pages/checkout/FinishCheckout";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Modal from "./components/Modal";
+import store from "./store";
+import { Provider } from "react-redux";
+import setAuthToken from "./utils/setAuthToken";
+import { getCurrentUser } from "./actions/auth";
+import { fetchProducts } from "./actions/product";
+import AdminRoute from "./routes/AdminRoute";
 
 const App = (props) => {
   const location = useLocation();
 
+  useEffect(() => {
+    if (localStorage.token) {
+      console.log(localStorage.token);
+      setAuthToken(localStorage.token);
+    }
+
+    store.dispatch(getCurrentUser());
+    store.dispatch(fetchProducts());
+  }, []);
+
   return (
     <>
-      <Modal>
-        <Route exact path="/" component={Home} />
-        <AnimatePresence exitBeforeEnter>
-          <Switch location={location} key={location.key}>
-            <Route exact path="/cart" component={ShoppingCart} />
-            <Route exact path="/checkout" component={Checkout} />
-            <Route exact path="/checkout/finish" component={FinishCheckout} />
-            <Route exact path="/admin/products" component={Products} />
-            <Route
-              exact
-              path="/admin/create-product"
-              component={CreateProduct}
-            />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Route
-              exact
-              path="/admin/edit-product/:slug"
-              component={EditProduct}
-            />
-          </Switch>
-        </AnimatePresence>
-      </Modal>
+      <Provider store={store}>
+        <Modal>
+          <Route exact path="/" component={Home} />
+          <AnimatePresence exitBeforeEnter>
+            <Switch location={location} key={location.key}>
+              <Route exact path="/cart" component={ShoppingCart} />
+              <Route exact path="/checkout" component={Checkout} />
+              <Route exact path="/checkout/finish" component={FinishCheckout} />
+              <AdminRoute exact path="/admin/products" component={Products} />
+              <AdminRoute
+                exact
+                path="/admin/create-product"
+                component={CreateProduct}
+              />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Route
+                exact
+                path="/admin/edit-product/:slug"
+                component={EditProduct}
+              />
+            </Switch>
+          </AnimatePresence>
+        </Modal>
+      </Provider>
     </>
   );
 };

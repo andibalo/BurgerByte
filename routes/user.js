@@ -87,10 +87,8 @@ router.post(
       res.json({
         status: "success",
         data: {
-          user: {
-            ...user,
-            token,
-          },
+          user,
+          token,
         },
       });
     } catch (error) {
@@ -129,39 +127,45 @@ router.post(
 
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    try {
+      const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({
-        status: "error",
-        message: "Wrong email/password",
+      if (!user) {
+        return res.status(400).json({
+          status: "error",
+          message: "Wrong email/password",
+        });
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        return res.status(400).json({
+          status: "error",
+          message: "Wrong email/password",
+        });
+      }
+
+      const payload = {
+        user: {
+          id: user._id.toString(),
+        },
+      };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET);
+
+      res.json({
+        status: "success",
+        data: {
+          user,
+          token,
+        },
       });
+    } catch (error) {
+      console.log(error);
+
+      res.send("server error");
     }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(400).json({
-        status: "error",
-        message: "Wrong email/password",
-      });
-    }
-
-    const payload = {
-      user: {
-        id: user._id.toString(),
-      },
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET);
-
-    res.json({
-      status: "success",
-      data: {
-        user,
-        token,
-      },
-    });
   }
 );
 

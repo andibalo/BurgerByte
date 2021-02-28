@@ -4,9 +4,12 @@ import Brand from "./Brand";
 import { AiOutlineLogout } from "@react-icons/all-files/ai/AiOutlineLogout";
 import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
 import { AiOutlineShoppingCart } from "@react-icons/all-files/ai/AiOutlineShoppingCart";
+import { Popover } from "antd";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
+import { connect } from "react-redux";
+import { logOut } from "../actions/auth";
 
 const StyledNavbar = styled.div`
   z-index: 10;
@@ -16,7 +19,14 @@ const StyledNavbar = styled.div`
   }
 `;
 
-const Navbar = ({ isUserNav, fixed = true, brandOnly }) => {
+const Navbar = ({
+  isUserNav,
+  fixed = true,
+  brandOnly,
+  isAuthenticated,
+  username,
+  logOut,
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const handleScroll = () => {
@@ -34,6 +44,20 @@ const Navbar = ({ isUserNav, fixed = true, brandOnly }) => {
       window.removeEventListener("scroll", listener, true);
     };
   }, []);
+
+  const popoverContent = (
+    <div>
+      <p className="py-3 flex justify-between items-center cursor-pointer hover:text-primary transition-all ">
+        View Cart <AiOutlineShoppingCart />
+      </p>
+      <p
+        onClick={logOut}
+        className="py-3 flex justify-between items-center cursor-pointer hover:text-primary transition-all "
+      >
+        Log Out <AiOutlineLogout />
+      </p>
+    </div>
+  );
 
   if (isUserNav) {
     return (
@@ -97,7 +121,22 @@ const Navbar = ({ isUserNav, fixed = true, brandOnly }) => {
                 <AiOutlineShoppingCart className="text-white text-2xl mr-6" />
               </Link>
 
-              <Button title="Login" href="/login" />
+              {isAuthenticated ? (
+                <Popover
+                  placement="bottom"
+                  content={popoverContent}
+                  title={() => (
+                    <p>
+                      Logged In as:{" "}
+                      <span className="font-bold">{username}</span>
+                    </p>
+                  )}
+                >
+                  <AiOutlineUser className="text-2xl text-white cursor-pointer" />
+                </Popover>
+              ) : (
+                <Button title="Login" href="/login" />
+              )}
             </div>
           </div>
         </div>
@@ -118,7 +157,10 @@ const Navbar = ({ isUserNav, fixed = true, brandOnly }) => {
                 </p>
                 <AiOutlineUser className="text-2xl" />
               </li>
-              <li className="p-3">
+              <li
+                className="p-3 cursor-pointer hover:text-primary transition-all"
+                onClick={logOut}
+              >
                 <AiOutlineLogout className="text-2xl" />
               </li>
             </ul>
@@ -129,4 +171,4 @@ const Navbar = ({ isUserNav, fixed = true, brandOnly }) => {
   );
 };
 
-export default Navbar;
+export default connect(null, { logOut })(Navbar);

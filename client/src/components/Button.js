@@ -25,11 +25,11 @@ const Button = ({
       <StyledButton
         onClick={onClick}
         borderless={borderless}
-        className={` ${className}`}
+        className={`hover:bg-primary transition-all  ${className}`}
       >
         <Link
           to={href}
-          className={`px-8 py-2  text-primary flex items-center justify-center`}
+          className={`px-8 py-2  text-primary flex items-center hover:text-white transition-all  justify-center`}
         >
           {icon && <span className="mr-3">{icon}</span>}
           {title}
@@ -43,7 +43,7 @@ const Button = ({
       onClick={onClick}
       borderless={borderless}
       loading={loading}
-      className={`px-8 py-2 flex items-center text-primary relative ${className}`}
+      className={`px-8 py-2 flex items-center text-primary relative hover:bg-primary transition-all hover:text-white ${className}`}
     >
       {loading && (
         <AiOutlineLoading className="animate-spin text-white text-xl absolute" />
