@@ -4,12 +4,10 @@ import SectionHeader from "../SectionHeader";
 
 const Sides = (props) => {
   return (
-    <div id="side">
-      <Section>
-        <SectionHeader title="Sides" />
-        <div className="container"></div>
-      </Section>
-    </div>
+    <Section id="sides">
+      <SectionHeader title="Sides" />
+      <div className="container"></div>
+    </Section>
   );
 };
 

@@ -5,11 +5,12 @@ import Hero from "../components/home/Hero";
 import Sides from "../components/home/Sides";
 import Navbar from "../components/Navbar";
 import Team from "../components/home/Team";
+import { connect } from "react-redux";
 
-const Home = (props) => {
+const Home = ({ isAuthenticated, username }) => {
   return (
     <div>
-      <Navbar isUserNav />
+      <Navbar isUserNav isAuthenticated={isAuthenticated} username={username} />
       <Hero />
       <Burgers />
       <Sides />
@@ -19,4 +20,9 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  username: state.auth.user?.username,
+});
+
+export default connect(mapStateToProps)(Home);

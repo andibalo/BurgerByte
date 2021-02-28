@@ -12,18 +12,16 @@ const StyledBrand = styled.div`
 
 const Brand = ({ logoOnly, textOnly }) => {
   return (
-    <StyledBrand className="flex items-center">
-      {!textOnly && (
-        <Link to="/">
-          <Logo className="logo mr-5" />
-        </Link>
-      )}
+    <StyledBrand>
+      <Link to="/" className="flex items-center">
+        {!textOnly && <Logo className="logo mr-5" />}
 
-      {!logoOnly && (
-        <h1 className="text-2xl text-white">
-          Burger<span className="text-primary">Byte</span>
-        </h1>
-      )}
+        {!logoOnly && (
+          <h1 className="text-2xl text-white">
+            Burger<span className="text-primary">Byte</span>
+          </h1>
+        )}
+      </Link>
     </StyledBrand>
   );
 };

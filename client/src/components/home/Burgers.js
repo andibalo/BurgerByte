@@ -23,7 +23,7 @@ const StyledBurgerCard = styled.div`
 
 const Burgers = (props) => {
   return (
-    <Section>
+    <Section id="burgers">
       <SectionHeader title="Burgers" />
       <div className="container">
         <div className="flex flex-wrap">

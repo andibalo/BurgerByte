@@ -1,5 +1,4 @@
 import React, { useState, createContext } from "react";
-import PropTypes from "prop-types";
 import { Modal as AntModal } from "antd";
 import styled from "styled-components";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
@@ -50,7 +49,5 @@ const Modal = ({ children }) => {
     </ModalContext.Provider>
   );
 };
-
-Modal.propTypes = {};
 
 export default Modal;

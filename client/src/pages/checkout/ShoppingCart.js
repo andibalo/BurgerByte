@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Navbar from "../../components/Navbar";
 import styled from "styled-components";
 import Button from "../../components/Button";
@@ -8,6 +7,7 @@ import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import { AiOutlinePlus } from "@react-icons/all-files/ai/AiOutlinePlus";
 import { AiOutlineMinus } from "@react-icons/all-files/ai/AiOutlineMinus";
 import { motion } from "framer-motion";
+import { connect } from "react-redux";
 
 const StyledShoppingCartContainer = styled.div`
   .cart,
@@ -68,7 +68,7 @@ const StyledStepTimeline = styled.div`
   }
 `;
 
-const ShoppingCart = (props) => {
+const ShoppingCart = ({ auth }) => {
   const containerVariants = {
     hidden: {
       x: "-100vw",
@@ -200,14 +200,27 @@ const ShoppingCart = (props) => {
               </div>
 
               <Button
-                title="Proceed To Checkout"
+                title={
+                  auth.isAuthenthicated
+                    ? `Proceed To Checkout`
+                    : "Login To Checkout"
+                }
                 className=" mt-auto"
-                href={{
-                  pathname: "/checkout",
-                  state: {
-                    fromCart: true,
-                  },
-                }}
+                href={
+                  auth.isAuthenthicated
+                    ? {
+                        pathname: "/checkout",
+                        state: {
+                          fromCart: true,
+                        },
+                      }
+                    : {
+                        pathname: "/login",
+                        state: {
+                          from: "/cart",
+                        },
+                      }
+                }
               />
             </div>
           </div>
@@ -217,6 +230,8 @@ const ShoppingCart = (props) => {
   );
 };
 
-ShoppingCart.propTypes = {};
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
 
-export default ShoppingCart;
+export default connect(mapStateToProps)(ShoppingCart);

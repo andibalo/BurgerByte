@@ -1,7 +1,8 @@
-import React, { Fragment } from "react";
+import React from "react";
 import styled from "styled-components";
 import { AiOutlineArrowDown } from "@react-icons/all-files/ai/AiOutlineArrowDown";
 import Button from "../Button";
+import { Link } from "react-scroll";
 
 const StyledHeroContainer = styled.div`
   background-image: url("./images/hero-bg.jpg");
@@ -31,7 +32,7 @@ const StyledHeroContainer = styled.div`
 
 const Hero = (props) => {
   return (
-    <StyledHeroContainer className="h-full">
+    <StyledHeroContainer id="hero" className="h-full">
       <div
         className="heroContent min-h-screen flex justify-center items-center "
         id="test"
@@ -45,8 +46,15 @@ const Hero = (props) => {
           </h3>
           <Button title="View Menu" />
         </div>
-
-        <AiOutlineArrowDown className="text-primary text-4xl absolute downArrow" />
+        <Link
+          to="burgers"
+          className="text-primary text-4xl absolute downArrow"
+          smooth={true}
+          duration={500}
+          offset={-30}
+        >
+          <AiOutlineArrowDown />
+        </Link>
       </div>
     </StyledHeroContainer>
   );

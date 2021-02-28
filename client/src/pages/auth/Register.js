@@ -1,111 +1,123 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import styled from "styled-components";
 import Button from "../../components/Button";
-import { Table } from "antd";
-import Burger1 from "../../assets/images/burger-1.png";
-import { AiOutlineArrowLeft } from "@react-icons/all-files/ai/AiOutlineArrowLeft";
+import { Input } from "antd";
+import { connect } from "react-redux";
+import { register } from "../../actions/auth";
+import { Redirect } from "react-router-dom";
 
-const StyledCheckoutContainer = styled.div`
-  .cart,
-  .orderSummary {
-    border-radius: var(--border-radius);
+const StyledRegisterContainer = styled.div`
+  .main {
+    min-height: 450px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    max-width: 80%;
   }
 
-  .cartRow {
-    min-height: 350px;
+  .formCard {
+    flex: 0 0 70%;
   }
 
-  .orderSummary {
-    flex: 0 0 30%;
-  }
-`;
-
-const StyledStepTimeline = styled.div`
-  .circle {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-  }
-
-  .steps-inner {
-    max-width: 500px;
+  .switchCard {
+    flex: 1;
   }
 `;
 
-const Register = (props) => {
+const Register = ({ register, loading, isAuthenticated, userRole }) => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const { email, username, password } = formData;
+
+  const handleFormChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleFormSubmit = async () => {
+    console.log(formData);
+
+    register(username, email, password);
+
+    setFormData({
+      username: "",
+      email: "",
+      password: "",
+    });
+  };
+
+  if (isAuthenticated) {
+    return <Redirect to={`${userRole === "user" ? "/" : "/admin/products"}`} />;
+  }
+
   return (
-    <StyledCheckoutContainer className="bg-secondary min-h-screen">
-      <Navbar isUserNav fixed={false} />
+    <StyledRegisterContainer className="bg-secondary min-h-screen">
+      <Navbar fixed={false} brandOnly />
       <div className="container py-16 ">
-        <StyledStepTimeline className="text-white mb-10 ">
-          <div className="steps-inner mx-auto">
-            <div className="steps-inner flex justify-between ">
-              <div className="flex flex-col items-center">
-                <div className="circle flex bg-grey items-center justify-center mb-3">
-                  <p className="font-bold text-2xl text-grey-dark">1</p>
-                </div>
-                <h4 className="text-grey  font-dosis font-bold">
-                  Shopping Cart
-                </h4>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="circle flex  bg-primary items-center justify-center mb-3">
-                  <p className="font-bold text-2xl  text-white">2</p>
-                </div>
-                <h4 className="font-dosis font-bold text-primary ">Checkout</h4>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="circle flex bg-grey items-center justify-center mb-3">
-                  <p className="font-bold text-2xl text-grey-dark">3</p>
-                </div>
-                <h4 className="text-grey font-dosis font-bold">Finish</h4>
-              </div>
-            </div>
-          </div>
-        </StyledStepTimeline>
-        <div className="flex cartRow justify-center">
-          <div className="bg-secondary-light  orderSummary  p-8">
-            <div className="flex flex-col h-full">
-              <div className="summary mb-5">
-                <h3 className="text-white text-2xl font-dosis font-bold mb-2">
-                  Order Summary
-                </h3>
-                <p className="text-white">1. VSCode Burger x1 = Rp.35.000</p>
-                <p className="text-white">
-                  2. Compiling Garlic Bread x1 = Rp.15.000
-                </p>
-              </div>
-
-              <div className="total">
-                <h5 className="text-white text-lg font-dosis font-bold mb-2">
-                  Total Amount
-                </h5>
-                <p className="text-primary font-bold text-md">Rp. 50.000</p>
-              </div>
+        <div className="main bg-primary rounded-xl  flex mx-auto shadow-xl">
+          <div className="formCard  p-8">
+            <h3 className="text-white text-2xl font-dosis font-bold text-center">
+              Register A New Account
+            </h3>
+            <div className="form mt-10 ">
+              <Input
+                name="username"
+                placeholder="Username"
+                size="large"
+                type="text"
+                value={username}
+                className="rounded-lg mb-3"
+                onChange={(e) => handleFormChange(e)}
+              />
+              <Input
+                name="email"
+                placeholder="Email"
+                size="large"
+                type="email"
+                value={email}
+                className="rounded-lg mb-3"
+                onChange={(e) => handleFormChange(e)}
+              />
+              <Input
+                name="password"
+                placeholder="Password"
+                size="large"
+                type="password"
+                value={password}
+                className="rounded-lg mb-5"
+                onChange={(e) => handleFormChange(e)}
+              />
 
               <Button
-                title="Confirm Payment"
-                className=" mt-auto"
-                href="/checkout/finish"
+                title="Register"
+                className="bg-secondary-light text-white w-full justify-center hover:bg-secondary"
+                onClick={handleFormSubmit}
+                loading={loading}
               />
             </div>
           </div>
-        </div>
-        <div className="mt-10">
-          <Button
-            title="Back To Shopping Cart"
-            borderless={true}
-            icon={<AiOutlineArrowLeft />}
-            href="/cart"
-          />
+          <div className="rounded-xl bg-secondary-light switchCard p-8 flex flex-col justify-center items-center">
+            <h3 className="text-white text-xl mb-3  font-dosis font-bold">
+              Already have an account?
+            </h3>
+            <Button title="Sign In" href="/login" />
+          </div>
         </div>
       </div>
-    </StyledCheckoutContainer>
+    </StyledRegisterContainer>
   );
 };
 
-Register.propTypes = {};
+const mapStateToProps = (state) => ({
+  loading: state.auth.loading,
+  isAuthenticated: state.auth.isAuthenticated,
+  userRole: state.auth.user?.role,
+});
 
-export default Register;
+export default connect(mapStateToProps, { register })(Register);

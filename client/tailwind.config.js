@@ -12,6 +12,7 @@ module.exports = {
       "grey-dark": "#7B7B7B",
       danger: "#E53935",
       warning: "#FDD835",
+      transparent: "transparent",
     },
     container: {
       padding: {
