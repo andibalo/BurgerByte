@@ -6,6 +6,7 @@ import { Input } from "antd";
 import { connect } from "react-redux";
 import { register } from "../../actions/auth";
 import { Redirect } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const StyledRegisterContainer = styled.div`
   .main {
@@ -24,7 +25,17 @@ const StyledRegisterContainer = styled.div`
   }
 `;
 
-const Register = ({ register, loading, isAuthenticated, userRole }) => {
+const SwitchCardVariants = {};
+
+const Register = ({
+  register,
+  loading,
+  isAuthenticated,
+  userRole,
+  location,
+}) => {
+  console.log(location);
+  const { fromLogin } = location.state;
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -60,7 +71,7 @@ const Register = ({ register, loading, isAuthenticated, userRole }) => {
     <StyledRegisterContainer className="bg-secondary min-h-screen">
       <Navbar fixed={false} brandOnly />
       <div className="container py-16 ">
-        <div className="main bg-primary rounded-xl  flex mx-auto shadow-xl">
+        <div className="main bg-primary rounded-xl  flex mx-auto shadow-xl relative">
           <div className="formCard  p-8">
             <h3 className="text-white text-2xl font-dosis font-bold text-center">
               Register A New Account
@@ -102,12 +113,22 @@ const Register = ({ register, loading, isAuthenticated, userRole }) => {
               />
             </div>
           </div>
-          <div className="rounded-xl bg-secondary-light switchCard p-8 flex flex-col justify-center items-center">
-            <h3 className="text-white text-xl mb-3  font-dosis font-bold">
-              Already have an account?
-            </h3>
-            <Button title="Sign In" href="/login" />
-          </div>
+
+          {fromLogin ? (
+            <motion.div className="rounded-xl bg-secondary-light switchCard p-8 flex flex-col justify-center items-center">
+              <h3 className="text-white text-xl mb-3  font-dosis font-bold">
+                Already have an account?
+              </h3>
+              <Button title="Sign In" href="/login" />
+            </motion.div>
+          ) : (
+            <div className="rounded-xl bg-secondary-light switchCard p-8 flex flex-col justify-center items-center">
+              <h3 className="text-white text-xl mb-3  font-dosis font-bold">
+                Already have an account?
+              </h3>
+              <Button title="Sign In" href="/login" />
+            </div>
+          )}
         </div>
       </div>
     </StyledRegisterContainer>

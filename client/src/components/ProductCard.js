@@ -21,8 +21,6 @@ const StyledProductCard = styled.div`
 `;
 
 const ProductCard = ({ product, handleDeleteProduct }) => {
-  console.log(product);
-
   const { title, description, category, price, images, slug } = product;
   return (
     <StyledProductCard className="bg-secondary rounded-lg shadow-xl p-5">

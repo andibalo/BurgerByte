@@ -16,6 +16,7 @@ import { Provider } from "react-redux";
 import setAuthToken from "./utils/setAuthToken";
 import { getCurrentUser } from "./actions/auth";
 import { fetchProducts } from "./actions/product";
+import { addToCart } from "./actions/cart";
 import AdminRoute from "./routes/AdminRoute";
 
 const App = (props) => {
@@ -29,6 +30,10 @@ const App = (props) => {
 
     store.dispatch(getCurrentUser());
     store.dispatch(fetchProducts());
+
+    if (localStorage.getItem("cart")) {
+      store.dispatch(addToCart([...JSON.parse(localStorage.getItem("cart"))]));
+    }
   }, []);
 
   return (
