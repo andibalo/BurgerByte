@@ -119,7 +119,7 @@ const Navbar = ({
             </ul>
             <div className="flex items-center">
               <Link to="/cart" className="mr-6">
-                <Badge count={(cart && cart.length) || 0}>
+                <Badge className="block" count={(cart && cart.length) || 0}>
                   <AiOutlineShoppingCart className="text-white text-2xl block hover:text-primary transition" />
                 </Badge>
               </Link>

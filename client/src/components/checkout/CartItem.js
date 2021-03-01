@@ -12,7 +12,12 @@ const StyledCartItemRow = styled.tr`
   }
 `;
 
-const CartItem = ({ product, removeFromCart }) => {
+const CartItem = ({
+  product,
+  removeFromCart,
+  decreaseQuantity,
+  increaseQuantity,
+}) => {
   console.log(product);
   return (
     <StyledCartItemRow>
@@ -22,9 +27,15 @@ const CartItem = ({ product, removeFromCart }) => {
       </td>
       <td className="text-white">
         <div className="flex items-center ">
-          <AiOutlineMinus className="text-primary cursor-pointer text-xl mr-5" />
+          <AiOutlineMinus
+            onClick={decreaseQuantity}
+            className="text-primary cursor-pointer text-xl mr-5"
+          />
           <p className="mr-5">{product.quantity}</p>
-          <AiOutlinePlus className="text-primary cursor-pointer text-xl" />
+          <AiOutlinePlus
+            onClick={increaseQuantity}
+            className="text-primary cursor-pointer text-xl"
+          />
         </div>
       </td>
       <td className="text-primary font-bold">{formatRupiah(product.price)}</td>

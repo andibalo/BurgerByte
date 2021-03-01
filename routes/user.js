@@ -38,6 +38,10 @@ router.get("/me", validateToken, async (req, res) => {
 router.post(
   "/register",
   [
+    check("first_name", "First Name is required").notEmpty(),
+    check("last_name", "Last Name is required").notEmpty(),
+    check("gender", "Gender is required").notEmpty(),
+    check("date_of_birth", "Date of birth is required").notEmpty(),
     check("username", "username is required").notEmpty(),
     check("email", "email is required")
       .notEmpty()

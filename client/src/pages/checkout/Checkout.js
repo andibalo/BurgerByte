@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import Navbar from "../../components/Navbar";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import { motion } from "framer-motion";
 import { AiOutlineArrowLeft } from "@react-icons/all-files/ai/AiOutlineArrowLeft";
+import { connect } from "react-redux";
+import { formatRupiah } from "../../utils/formatRupiah";
+import { emptyCart } from "../../actions/cart";
 
 const StyledCheckoutContainer = styled.div`
   .cart,
@@ -50,8 +52,14 @@ const StyledStepTimeline = styled.div`
   }
 `;
 
-const Checkout = ({ history }) => {
+const Checkout = ({ history, cart, emptyCart }) => {
   const [isGoingBack, setIsGoingBack] = useState(false);
+
+  const getTotal = () => {
+    return cart.reduce((totalPrice, item) => {
+      return totalPrice + item.price * item.quantity;
+    }, 0);
+  };
 
   const containerVariants = {
     hidden: {
@@ -122,9 +130,15 @@ const Checkout = ({ history }) => {
     history.goBack();
   };
 
+  const handleConfirmPayment = () => {
+    localStorage.removeItem("cart");
+    emptyCart();
+    history.push("/checkout/finish");
+  };
+
   return (
     <StyledCheckoutContainer className="bg-secondary min-h-screen">
-      <Navbar isUserNav fixed={false} />
+      <Navbar fixed={false} brandOnly />
       <div className="container py-16 ">
         <StyledStepTimeline className="text-white mb-10 ">
           <div className="steps-inner mx-auto relative">
@@ -196,23 +210,38 @@ const Checkout = ({ history }) => {
                   <h3 className="text-white text-2xl font-dosis font-bold mb-2">
                     Order Summary
                   </h3>
-                  <p className="text-white">1. VSCode Burger x1 = Rp.35.000</p>
-                  <p className="text-white">
-                    2. Compiling Garlic Bread x1 = Rp.15.000
-                  </p>
+                  {cart &&
+                    cart.length > 0 &&
+                    cart.map((product, i) => (
+                      <p className="text-white">
+                        {`${i + 1}. ${product.title} x${
+                          product.quantity
+                        } = ${formatRupiah(
+                          product.price * product.quantity
+                        )}`}{" "}
+                      </p>
+                    ))}
                 </div>
 
                 <div className="total">
                   <h5 className="text-white text-lg font-dosis font-bold mb-2">
                     Total Amount
                   </h5>
-                  <p className="text-primary font-bold text-md">Rp. 50.000</p>
+                  <div className="flex">
+                    <p className="text-primary font-bold text-md line-through mr-3">
+                      {formatRupiah(getTotal())}
+                    </p>
+                    <p className="text-primary font-bold text-md">
+                      {formatRupiah(0)}
+                    </p>
+                  </div>
+                  <p className="text-danger">* Grand Opening Discount</p>
                 </div>
 
                 <Button
                   title="Confirm Payment"
-                  className=" mt-auto"
-                  href="/checkout/finish"
+                  className="justify-center mt-auto"
+                  onClick={() => handleConfirmPayment()}
                 />
               </div>
             </div>
@@ -231,6 +260,8 @@ const Checkout = ({ history }) => {
   );
 };
 
-Checkout.propTypes = {};
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
 
-export default Checkout;
+export default connect(mapStateToProps, { emptyCart })(Checkout);

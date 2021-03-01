@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { connect } from "react-redux";
 import { emptyCart, addToCart } from "../../actions/cart";
 import CartItem from "../../components/checkout/CartItem";
+import { formatRupiah } from "../../utils/formatRupiah";
 
 const StyledShoppingCartContainer = styled.div`
   .cart,
@@ -83,6 +84,12 @@ const ShoppingCart = ({ auth, emptyCart, cart, addToCart }) => {
     },
   };
 
+  const getTotal = () => {
+    return cart.reduce((totalPrice, item) => {
+      return totalPrice + item.price * item.quantity;
+    }, 0);
+  };
+
   const handleEmptyCart = () => {
     localStorage.removeItem("cart");
 
@@ -97,6 +104,33 @@ const ShoppingCart = ({ auth, emptyCart, cart, addToCart }) => {
     }
 
     cart = cart.filter((product) => product._id !== id);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    addToCart(cart);
+  };
+
+  const handleQuantityChange = (productId, type) => {
+    let cart = [];
+
+    if (localStorage.getItem("cart")) {
+      cart = [...JSON.parse(localStorage.getItem("cart"))];
+    }
+
+    cart = cart.map((product) => {
+      if (product._id === productId) {
+        product.quantity =
+          type === "increment" ? ++product.quantity : --product.quantity;
+
+        if (product.quantity < 1) {
+          product.quantity = 1;
+        }
+      }
+
+      return product;
+    });
+
+    // console.log(cart);
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
@@ -163,6 +197,12 @@ const ShoppingCart = ({ auth, emptyCart, cart, addToCart }) => {
                     <CartItem
                       product={product}
                       removeFromCart={() => removeFromCart(product._id)}
+                      decreaseQuantity={() =>
+                        handleQuantityChange(product._id, "decrement")
+                      }
+                      increaseQuantity={() =>
+                        handleQuantityChange(product._id, "increment")
+                      }
                     />
                   ))}
                 </tbody>
@@ -187,28 +227,37 @@ const ShoppingCart = ({ auth, emptyCart, cart, addToCart }) => {
                 <h3 className="text-white text-2xl font-dosis font-bold mb-2">
                   Order Summary
                 </h3>
-                <p className="text-white">1. VSCode Burger x1 = Rp.35.000</p>
-                <p className="text-white">
-                  2. Compiling Garlic Bread x1 = Rp.15.000
-                </p>
+                {cart &&
+                  cart.length > 0 &&
+                  cart.map((product, i) => (
+                    <p className="text-white">
+                      {`${i + 1}. ${product.title} x${
+                        product.quantity
+                      } = ${formatRupiah(
+                        product.price * product.quantity
+                      )}`}{" "}
+                    </p>
+                  ))}
               </div>
 
               <div className="total">
                 <h5 className="text-white text-lg font-dosis font-bold mb-2">
                   Total
                 </h5>
-                <p className="text-primary font-bold text-md">Rp. 50.000</p>
+                <p className="text-primary font-bold text-md">
+                  {formatRupiah(getTotal())}
+                </p>
               </div>
 
               <Button
                 title={
-                  auth.isAuthenthicated
+                  auth.isAuthenticated
                     ? `Proceed To Checkout`
                     : "Login To Checkout"
                 }
                 className=" mt-auto"
                 href={
-                  auth.isAuthenthicated
+                  auth.isAuthenticated
                     ? {
                         pathname: "/checkout",
                         state: {
