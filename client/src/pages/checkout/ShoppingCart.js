@@ -2,12 +2,12 @@ import React from "react";
 import Navbar from "../../components/Navbar";
 import styled from "styled-components";
 import Button from "../../components/Button";
-import Burger1 from "../../assets/images/burger-1.png";
-import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
-import { AiOutlinePlus } from "@react-icons/all-files/ai/AiOutlinePlus";
-import { AiOutlineMinus } from "@react-icons/all-files/ai/AiOutlineMinus";
+import { AiOutlineDelete } from "@react-icons/all-files/ai/AiOutlineDelete";
 import { motion } from "framer-motion";
 import { connect } from "react-redux";
+import { emptyCart, addToCart } from "../../actions/cart";
+import CartItem from "../../components/checkout/CartItem";
+import { formatRupiah } from "../../utils/formatRupiah";
 
 const StyledShoppingCartContainer = styled.div`
   .cart,
@@ -25,10 +25,6 @@ const StyledShoppingCartContainer = styled.div`
 
   .orderSummary {
     flex: 0 0 30%;
-  }
-
-  .productImage {
-    max-width: 100px;
   }
 
   .cartTable {
@@ -68,7 +64,7 @@ const StyledStepTimeline = styled.div`
   }
 `;
 
-const ShoppingCart = ({ auth }) => {
+const ShoppingCart = ({ auth, emptyCart, cart, addToCart }) => {
   const containerVariants = {
     hidden: {
       x: "-100vw",
@@ -88,11 +84,64 @@ const ShoppingCart = ({ auth }) => {
     },
   };
 
+  const getTotal = () => {
+    return cart.reduce((totalPrice, item) => {
+      return totalPrice + item.price * item.quantity;
+    }, 0);
+  };
+
+  const handleEmptyCart = () => {
+    localStorage.removeItem("cart");
+
+    emptyCart();
+  };
+
+  const removeFromCart = (id) => {
+    let cart = [];
+
+    if (localStorage.getItem("cart")) {
+      cart = [...JSON.parse(localStorage.getItem("cart"))];
+    }
+
+    cart = cart.filter((product) => product._id !== id);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    addToCart(cart);
+  };
+
+  const handleQuantityChange = (productId, type) => {
+    let cart = [];
+
+    if (localStorage.getItem("cart")) {
+      cart = [...JSON.parse(localStorage.getItem("cart"))];
+    }
+
+    cart = cart.map((product) => {
+      if (product._id === productId) {
+        product.quantity =
+          type === "increment" ? ++product.quantity : --product.quantity;
+
+        if (product.quantity < 1) {
+          product.quantity = 1;
+        }
+      }
+
+      return product;
+    });
+
+    // console.log(cart);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    addToCart(cart);
+  };
+
   return (
     <StyledShoppingCartContainer className="bg-secondary  min-h-screen">
-      <Navbar isUserNav fixed={false} />
+      <Navbar isUserNav fixed={true} />
       <div className="container py-16 ">
-        <StyledStepTimeline className="text-white mb-10  ">
+        <StyledStepTimeline className="text-white mb-10  mt-16">
           <div className="steps-inner mx-auto relative">
             <div className="steps-inner flex justify-between ">
               <div className="flex flex-col items-center">
@@ -126,59 +175,51 @@ const ShoppingCart = ({ auth }) => {
           animate="visible"
           exit="exit"
         >
-          <div className="bg-secondary-light cart p-8">
+          <div className="bg-secondary-light cart p-8 flex flex-col">
             <h3 className="text-white text-2xl font-dosis font-bold">
               Shopping Cart
             </h3>
-            <table className="table-auto w-full border-separate cartTable">
-              <thead>
-                <tr>
-                  <th></th>
 
-                  <th className="text-grey text-xl font-light">Quantity</th>
-                  <th className="text-grey text-xl font-light">Price</th>
-                  <th></th>
-                </tr>
-              </thead>
+            {cart && cart.length > 0 ? (
+              <table className="table-auto w-full border-separate cartTable">
+                <thead>
+                  <tr>
+                    <th></th>
 
-              <tbody>
-                <tr>
-                  <td className="flex items-center">
-                    <img src={Burger1} className="productImage" />
-                    <p className="text-white ml-5">VSCode Burger</p>
-                  </td>
-                  <td className="text-white">
-                    <div className="flex items-center ">
-                      <AiOutlineMinus className="text-primary cursor-pointer text-xl mr-5" />
-                      <p className="mr-5">1</p>
-                      <AiOutlinePlus className="text-primary cursor-pointer text-xl" />
-                    </div>
-                  </td>
-                  <td className="text-primary font-bold">Rp. 35.000</td>
-                  <td>
-                    <AiOutlineClose className="text-danger cursor-pointer" />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="flex items-center">
-                    <img src={Burger1} className="productImage" />
-                    <p className="text-white ml-5">VSCode Burger</p>
-                  </td>
+                    <th className="text-grey text-xl font-light">Quantity</th>
+                    <th className="text-grey text-xl font-light">Price</th>
+                    <th></th>
+                  </tr>
+                </thead>
 
-                  <td className="text-white">
-                    <div className="flex items-center ">
-                      <AiOutlineMinus className="text-primary cursor-pointer text-xl mr-5" />
-                      <p className="mr-5">1</p>
-                      <AiOutlinePlus className="text-primary cursor-pointer text-xl" />
-                    </div>
-                  </td>
-                  <td className="text-primary font-bold">Rp. 35.000</td>
-                  <td>
-                    <AiOutlineClose className="text-danger cursor-pointer" />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                <tbody>
+                  {cart.map((product) => (
+                    <CartItem
+                      product={product}
+                      removeFromCart={() => removeFromCart(product._id)}
+                      decreaseQuantity={() =>
+                        handleQuantityChange(product._id, "decrement")
+                      }
+                      increaseQuantity={() =>
+                        handleQuantityChange(product._id, "increment")
+                      }
+                    />
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p className="text-white mt-5 text-md">No product in cart</p>
+            )}
+
+            <div className="mt-auto">
+              <Button
+                borderless
+                onClick={handleEmptyCart}
+                icon={<AiOutlineDelete className="text-xl" />}
+                title="Empty Cart"
+                className="text-danger font-bold hover:text-danger hover:bg-grey-30"
+              />
+            </div>
           </div>
           <div className="bg-secondary-light ml-auto orderSummary  p-8">
             <div className="flex flex-col h-full">
@@ -186,28 +227,37 @@ const ShoppingCart = ({ auth }) => {
                 <h3 className="text-white text-2xl font-dosis font-bold mb-2">
                   Order Summary
                 </h3>
-                <p className="text-white">1. VSCode Burger x1 = Rp.35.000</p>
-                <p className="text-white">
-                  2. Compiling Garlic Bread x1 = Rp.15.000
-                </p>
+                {cart &&
+                  cart.length > 0 &&
+                  cart.map((product, i) => (
+                    <p className="text-white">
+                      {`${i + 1}. ${product.title} x${
+                        product.quantity
+                      } = ${formatRupiah(
+                        product.price * product.quantity
+                      )}`}{" "}
+                    </p>
+                  ))}
               </div>
 
               <div className="total">
                 <h5 className="text-white text-lg font-dosis font-bold mb-2">
                   Total
                 </h5>
-                <p className="text-primary font-bold text-md">Rp. 50.000</p>
+                <p className="text-primary font-bold text-md">
+                  {formatRupiah(getTotal())}
+                </p>
               </div>
 
               <Button
                 title={
-                  auth.isAuthenthicated
+                  auth.isAuthenticated
                     ? `Proceed To Checkout`
                     : "Login To Checkout"
                 }
                 className=" mt-auto"
                 href={
-                  auth.isAuthenthicated
+                  auth.isAuthenticated
                     ? {
                         pathname: "/checkout",
                         state: {
@@ -232,6 +282,7 @@ const ShoppingCart = ({ auth }) => {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  cart: state.cart,
 });
 
-export default connect(mapStateToProps)(ShoppingCart);
+export default connect(mapStateToProps, { emptyCart, addToCart })(ShoppingCart);

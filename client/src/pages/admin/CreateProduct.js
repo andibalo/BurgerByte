@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { Input, Select, InputNumber, Upload, message, Button } from "antd";
 import axiosInstance from "../../utils/axiosInstance";
 import { AiOutlineCamera } from "@react-icons/all-files/ai/AiOutlineCamera";
+import { connect } from "react-redux";
+import { fetchProducts } from "../../actions/product";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -21,7 +23,7 @@ const StyledAdminContainer = styled.div`
   }
 `;
 
-const CreateProduct = (props) => {
+const CreateProduct = ({ fetchProducts }) => {
   const [fileList, setFileList] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -49,8 +51,6 @@ const CreateProduct = (props) => {
     try {
       const res = await axiosInstance.post("/api/product/create", formData);
 
-      console.log("CREATE PRODUCT", res);
-
       setFormData({
         title: "",
         description: "",
@@ -61,6 +61,8 @@ const CreateProduct = (props) => {
 
       setFileList([]);
       setIsImageUploaded(false);
+
+      fetchProducts();
       setLoading(false);
     } catch (error) {
       //console.log(error);
@@ -203,4 +205,4 @@ const CreateProduct = (props) => {
   );
 };
 
-export default CreateProduct;
+export default connect(null, { fetchProducts })(CreateProduct);

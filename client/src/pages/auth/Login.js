@@ -24,7 +24,7 @@ const StyledRegisterContainer = styled.div`
   }
 `;
 
-const Login = ({ isLoading, login, isAuthenticated, userRole }) => {
+const Login = ({ isLoading, login, isAuthenticated, userRole, location }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -51,6 +51,10 @@ const Login = ({ isLoading, login, isAuthenticated, userRole }) => {
   };
 
   if (isAuthenticated) {
+    if (location.state?.from) {
+      return <Redirect to={location.state?.from} />;
+    }
+
     return <Redirect to={`${userRole === "user" ? "/" : "/admin/products"}`} />;
   }
 
@@ -63,7 +67,15 @@ const Login = ({ isLoading, login, isAuthenticated, userRole }) => {
             <h3 className="text-white text-xl mb-3  font-dosis font-bold">
               Don't have an account?
             </h3>
-            <Button title="Sign Up" href="/register" />
+            <Button
+              title="Sign Up"
+              href={{
+                pathname: "/register",
+                state: {
+                  fromLogin: true,
+                },
+              }}
+            />
           </div>
           <div className="formCard  p-8">
             <h3 className="text-white text-2xl font-dosis font-bold text-center">

@@ -4,7 +4,7 @@ import Brand from "./Brand";
 import { AiOutlineLogout } from "@react-icons/all-files/ai/AiOutlineLogout";
 import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
 import { AiOutlineShoppingCart } from "@react-icons/all-files/ai/AiOutlineShoppingCart";
-import { Popover } from "antd";
+import { Popover, Badge } from "antd";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
@@ -26,6 +26,7 @@ const Navbar = ({
   isAuthenticated,
   username,
   logOut,
+  cart,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -117,8 +118,10 @@ const Navbar = ({
               </li>
             </ul>
             <div className="flex items-center">
-              <Link to="/cart">
-                <AiOutlineShoppingCart className="text-white text-2xl mr-6" />
+              <Link to="/cart" className="mr-6">
+                <Badge className="block" count={(cart && cart.length) || 0}>
+                  <AiOutlineShoppingCart className="text-white text-2xl block hover:text-primary transition" />
+                </Badge>
               </Link>
 
               {isAuthenticated ? (
@@ -171,4 +174,8 @@ const Navbar = ({
   );
 };
 
-export default connect(null, { logOut })(Navbar);
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
+
+export default connect(mapStateToProps, { logOut })(Navbar);
