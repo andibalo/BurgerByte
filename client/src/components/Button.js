@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { AiOutlineLoading } from "@react-icons/all-files/ai/AiOutlineLoading";
+import { Link as ScrollLink } from "react-scroll";
 
 const StyledButton = styled.button`
   border: ${({ borderless }) =>
@@ -19,21 +20,35 @@ const Button = ({
   href,
   onClick,
   loading,
+  scrollLink,
 }) => {
-  if (href) {
+  if (href || scrollLink) {
     return (
       <StyledButton
         onClick={onClick}
         borderless={borderless}
         className={`hover:bg-primary transition-all  ${className}`}
       >
-        <Link
-          to={href}
-          className={`px-8 py-2  text-primary flex items-center hover:text-white transition-all  justify-center`}
-        >
-          {icon && <span className="mr-3">{icon}</span>}
-          {title}
-        </Link>
+        {href ? (
+          <Link
+            to={href}
+            className={`px-8 py-2  text-primary flex items-center hover:text-white transition-all  justify-center`}
+          >
+            {icon && <span className="mr-3">{icon}</span>}
+            {title}
+          </Link>
+        ) : (
+          <ScrollLink
+            to={scrollLink}
+            smooth={true}
+            duration={500}
+            offset={-30}
+            className={`px-8 py-2  text-primary flex items-center hover:text-white transition-all  justify-center`}
+          >
+            {icon && <span className="mr-3">{icon}</span>}
+            {title}
+          </ScrollLink>
+        )}
       </StyledButton>
     );
   }

@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FaBeer } from "@react-icons/all-files/fa/FaBeer";
 import { AiOutlineInfoCircle } from "@react-icons/all-files/ai/AiOutlineInfoCircle";
@@ -53,7 +52,7 @@ const ProductCard = ({ product, handleDeleteProduct }) => {
           </div>
           <div
             className="flex-grow p-3 cursor-pointer hover:bg-secondary-light rounded-lg transition"
-            onClick={() => handleDeleteProduct(slug)}
+            onClick={() => handleDeleteProduct(slug, images)}
           >
             <AiOutlineCloseCircle className="mx-auto text-3xl text-danger" />
           </div>
@@ -62,7 +61,5 @@ const ProductCard = ({ product, handleDeleteProduct }) => {
     </StyledProductCard>
   );
 };
-
-ProductCard.propTypes = {};
 
 export default ProductCard;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import Section from "../Section";
 import SectionHeader from "../SectionHeader";
 import styled from "styled-components";
@@ -6,8 +6,10 @@ import useModal from "../../hooks/useModal";
 import Button from "../Button";
 import { connect } from "react-redux";
 import { formatRupiah } from "../../utils/formatRupiah";
-import { Image, message } from "antd";
+import { Image, message, Spin } from "antd";
 import { addToCart } from "../../actions/cart";
+import sr from "../../utils/sr";
+import srConfig from "../../utils/srConfig";
 
 const StyledBurgerCard = styled.div`
   flex: 0 0 50%;
@@ -23,13 +25,15 @@ const StyledBurgerCard = styled.div`
   }
 `;
 
-const StyledBurgerImage = styled.div`
-  max-width: 250px;
-  width: 100%;
-`;
-
 const Burgers = ({ products, loading, addToCart }) => {
   const [openModal, closeModal] = useModal();
+
+  const revealSectionHeader = useRef(null);
+  const revealSectionContent = useRef(null);
+  useEffect(() => {
+    sr.reveal(revealSectionHeader.current, srConfig());
+    sr.reveal(revealSectionContent.current, srConfig());
+  }, []);
 
   const modalContent = (images, description) => (
     <div>
@@ -52,7 +56,9 @@ const Burgers = ({ products, loading, addToCart }) => {
     </div>
   );
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (e, product) => {
+    e.stopPropagation();
+
     let cart = [];
 
     if (localStorage.getItem("cart")) {
@@ -78,64 +84,68 @@ const Burgers = ({ products, loading, addToCart }) => {
       quantity: 1,
     });
 
-    console.log(cart);
+    // console.log(cart);
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
     addToCart(cart);
   };
 
+  const handleClickBurgerCard = (e, product) => {
+    e.stopPropagation();
+
+    openModal(() => modalContent(product.images, product.description));
+  };
+
   return (
     <Section id="burgers">
-      <SectionHeader title="Burgers" />
-      <div className="container">
-        <div className="flex flex-wrap">
-          {!loading &&
-            products &&
-            products.length > 0 &&
-            products.map((product) => {
-              if (product.category === "burger") {
-                return (
-                  <StyledBurgerCard
-                    key={product._id}
-                    className="p-3 shadow-xl "
-                  >
-                    <div className="bg-secondary-light p-8 inner-card flex items-center">
-                      <div>
-                        <h1 className="text-white text-5xl mb-2">
-                          {product.title}
-                          {/* <br />
-                          <span className="text-primary">Burger</span> */}
-                        </h1>
-                        <p className="text-danger font-bold text-2xl mb-5">
-                          {formatRupiah(product.price)}
-                        </p>
-                        <Button
-                          title="Add To Cart"
-                          onClick={() => handleAddToCart(product)}
-                        />
-                      </div>
-                      <div
-                        className="burgerImageCont ml-auto"
-                        onClick={() =>
-                          openModal(() =>
-                            modalContent(product.images, product.description)
-                          )
-                        }
-                      >
-                        <img
-                          src={`/${product.images[0].image_url}`}
-                          alt="burger1"
-                          className="burgerImage"
-                        />
-                      </div>
-                    </div>
-                  </StyledBurgerCard>
-                );
-              }
-            })}
-        </div>
+      <div ref={revealSectionHeader}>
+        <SectionHeader ref={revealSectionHeader} title="Burgers" />
       </div>
+      <Spin spinning={loading} size="large">
+        <div ref={revealSectionContent} className="container ">
+          <div className="flex flex-wrap">
+            {!loading &&
+              products &&
+              products.length > 0 &&
+              products.map((product) => {
+                if (product.category === "burger") {
+                  return (
+                    <StyledBurgerCard
+                      key={product._id}
+                      className="p-3 shadow-xl transform hover:-translate-y-2 transition"
+                    >
+                      <div
+                        className=" bg-secondary-light p-8 inner-card flex items-center cursor-pointer "
+                        onClick={(e) => handleClickBurgerCard(e, product)}
+                      >
+                        <div>
+                          <h1 className="text-white text-5xl mb-2">
+                            {product.title}
+                          </h1>
+                          <p className="text-danger font-bold text-2xl mb-5">
+                            {formatRupiah(product.price)}
+                          </p>
+                          <Button
+                            title="Add To Cart"
+                            onClick={(e) => handleAddToCart(e, product)}
+                          />
+                        </div>
+                        <div className="burgerImageCont ml-auto">
+                          <img
+                            src={`/${product.images[0].image_url}`}
+                            alt="burger1"
+                            className="burgerImage"
+                          />
+                        </div>
+                      </div>
+                    </StyledBurgerCard>
+                  );
+                }
+              })}
+          </div>
+        </div>
+      </Spin>
     </Section>
   );
 };

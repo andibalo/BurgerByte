@@ -44,7 +44,7 @@ const Hero = (props) => {
           <h3 className="text-white font-dosis text-2xl mb-10">
             Get Your Free Burger In Our Grand Opening !
           </h3>
-          <Button title="View Menu" />
+          <Button title="View Menu" scrollLink="burgers" />
         </div>
         <Link
           to="burgers"

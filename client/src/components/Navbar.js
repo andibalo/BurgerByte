@@ -4,6 +4,7 @@ import Brand from "./Brand";
 import { AiOutlineLogout } from "@react-icons/all-files/ai/AiOutlineLogout";
 import { AiOutlineUser } from "@react-icons/all-files/ai/AiOutlineUser";
 import { AiOutlineShoppingCart } from "@react-icons/all-files/ai/AiOutlineShoppingCart";
+import { AiOutlineRight } from "@react-icons/all-files/ai/AiOutlineRight";
 import { Popover, Badge } from "antd";
 import Button from "./Button";
 import { Link } from "react-router-dom";
@@ -27,6 +28,7 @@ const Navbar = ({
   username,
   logOut,
   cart,
+  userRole,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -48,6 +50,14 @@ const Navbar = ({
 
   const popoverContent = (
     <div>
+      {isAuthenticated && userRole === "admin" && (
+        <Link
+          to="/admin/products"
+          className="py-3 flex justify-between items-center cursor-pointer hover:text-primary transition-all "
+        >
+          Go To Admin Dashboard <AiOutlineRight />
+        </Link>
+      )}
       <p className="py-3 flex justify-between items-center cursor-pointer hover:text-primary transition-all ">
         View Cart <AiOutlineShoppingCart />
       </p>
@@ -176,6 +186,7 @@ const Navbar = ({
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
+  userRole: state.auth.user?.role,
 });
 
 export default connect(mapStateToProps, { logOut })(Navbar);
