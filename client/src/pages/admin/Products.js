@@ -34,11 +34,17 @@ const Products = (props) => {
     }
   };
 
-  const handleDeleteProduct = async (slug) => {
+  const handleDeleteProduct = async (slug, images) => {
     try {
+      const deleteImagePromises = images.map(async (image) => {
+        return await axiosInstance.delete(`/api/image/${image.id}`);
+      });
+
+      await Promise.all(deleteImagePromises);
+
       const res = await axiosInstance.delete(`/api/product/${slug}`);
 
-      console.log("Delete Product Res", res);
+      //console.log("Delete Product Res", res);
       handleFetchProducts();
     } catch (error) {
       console.log(error);

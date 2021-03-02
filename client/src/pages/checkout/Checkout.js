@@ -213,7 +213,7 @@ const Checkout = ({ history, cart, emptyCart }) => {
                   {cart &&
                     cart.length > 0 &&
                     cart.map((product, i) => (
-                      <p className="text-white">
+                      <p className="text-white" key={product._id}>
                         {`${i + 1}. ${product.title} x${
                           product.quantity
                         } = ${formatRupiah(
