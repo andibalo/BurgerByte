@@ -42,22 +42,22 @@ router.post(
     check("last_name", "Last Name is required").notEmpty(),
     check("gender", "Gender is required").notEmpty(),
     check("date_of_birth", "Date of birth is required").notEmpty(),
-    check("username", "username is required").notEmpty(),
-    check("email", "email is required")
+    check("username", "Username is required").notEmpty(),
+    check("email", "Email is required")
       .notEmpty()
       .isEmail()
       .withMessage("Email must be in correct format"),
-    check("password", "password is required")
+    check("password", "Password is required")
       .notEmpty()
       .isLength({
         min: 6,
       })
-      .withMessage("password must be at least 6 characters long"),
+      .withMessage("Password must be at least 6 characters long"),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).send({ status: "error", errors: errors.array() });
     }
 
     const { username, email, password } = req.body;
@@ -112,21 +112,21 @@ router.post(
 router.post(
   "/login",
   [
-    check("email", "email is required")
+    check("email", "Email is required")
       .notEmpty()
       .isEmail()
       .withMessage("Email must be in correct format"),
-    check("password", "password is required")
+    check("password", "Password is required")
       .notEmpty()
       .isLength({
         min: 6,
       })
-      .withMessage("password must be at least 6 characters long"),
+      .withMessage("Password must be at least 6 characters long"),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ status: "error", errors: errors.array() });
     }
 
     const { email, password } = req.body;
@@ -144,7 +144,7 @@ router.post(
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        return res.status(400).json({
+        return res.status(404).send({
           status: "error",
           message: "Wrong email/password",
         });

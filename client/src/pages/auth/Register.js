@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import styled from "styled-components";
 import Button from "../../components/Button";
-import { Input, Select, DatePicker } from "antd";
+import { Input, Select, DatePicker, message } from "antd";
 import { connect } from "react-redux";
 import { register } from "../../actions/auth";
 import { Redirect } from "react-router-dom";
@@ -36,12 +36,14 @@ const Register = ({
   userRole,
   location,
 }) => {
-  console.log(location);
+  //console.log(location);
+
   const { fromLogin } = location.state;
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     gender: "male",
+    dob: "",
     username: "",
     email: "",
     password: "",
@@ -57,19 +59,40 @@ const Register = ({
   };
 
   const handleFormSubmit = async () => {
-    console.log(formData);
+    //console.log(formData);
 
-    register(username, email, password);
+    const result = await register(username, email, password);
+
+    if (result.status === "error") {
+      if (result.errors) {
+        result.errors.map((error, i) => {
+          message.warning(error.msg, 1.5 + i / 10);
+        });
+
+        return;
+      }
+
+      message.warning(result.message);
+
+      return;
+    }
 
     setFormData({
+      firstName: "",
+      lastName: "",
+      gender: "male",
+      dob: "",
       username: "",
       email: "",
       password: "",
     });
   };
 
-  function onChange(date, dateString) {
-    console.log(date, dateString);
+  function handleChangeDob(date, dateString) {
+    setFormData({
+      ...formData,
+      dob: dateString,
+    });
   }
 
   if (isAuthenticated) {
@@ -127,7 +150,7 @@ const Register = ({
               />
               <div className="flex mb-3">
                 <DatePicker
-                  onChange={onChange}
+                  onChange={handleChangeDob}
                   className="flex-grow mr-3"
                   placeholder="Date Of Birth"
                 />

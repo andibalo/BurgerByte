@@ -25,7 +25,7 @@ const StyledBurgerCard = styled.div`
   }
 `;
 
-const Burgers = ({ products, loading, addToCart }) => {
+const Burgers = ({ products, loading, isAuthenticated, addToCart }) => {
   const [openModal, closeModal] = useModal();
 
   const revealSectionHeader = useRef(null);
@@ -126,10 +126,22 @@ const Burgers = ({ products, loading, addToCart }) => {
                           <p className="text-danger font-bold text-2xl mb-5">
                             {formatRupiah(product.price)}
                           </p>
-                          <Button
-                            title="Add To Cart"
-                            onClick={(e) => handleAddToCart(e, product)}
-                          />
+                          {isAuthenticated ? (
+                            <Button
+                              title="Add To Cart"
+                              onClick={(e) => handleAddToCart(e, product)}
+                            />
+                          ) : (
+                            <Button
+                              title="Login To Add To Cart"
+                              href={{
+                                pathname: "/login",
+                                state: {
+                                  from: "/",
+                                },
+                              }}
+                            />
+                          )}
                         </div>
                         <div className="burgerImageCont ml-auto">
                           <img
@@ -153,6 +165,7 @@ const Burgers = ({ products, loading, addToCart }) => {
 const mapStateToProps = (state) => ({
   products: state.product.productsList,
   loading: state.product.loading,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, { addToCart })(Burgers);

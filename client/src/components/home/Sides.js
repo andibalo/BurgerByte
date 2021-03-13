@@ -29,7 +29,7 @@ const StyledSidesCard = styled.div`
   }
 `;
 
-const Sides = ({ productList, loading, addToCart }) => {
+const Sides = ({ productList, loading, isAuthenticated, addToCart }) => {
   const revealSidesHeader = useRef(null);
   const revealSidesContent = useRef(null);
 
@@ -108,11 +108,24 @@ const Sides = ({ productList, loading, addToCart }) => {
                           <p className="text-danger font-bold text-center text-2xl mb-5">
                             {formatRupiah(product.price)}
                           </p>
-                          <Button
-                            title="Add To Cart"
-                            className="mt-auto"
-                            onClick={() => handleAddToCart(product)}
-                          />
+                          {isAuthenticated ? (
+                            <Button
+                              title="Add To Cart"
+                              className="mt-auto"
+                              onClick={(e) => handleAddToCart(e, product)}
+                            />
+                          ) : (
+                            <Button
+                              title="Login To Add To Cart"
+                              className="mt-auto"
+                              href={{
+                                pathname: "/login",
+                                state: {
+                                  from: "/",
+                                },
+                              }}
+                            />
+                          )}
                         </div>
                       </div>
                     </StyledSidesCard>
@@ -129,6 +142,7 @@ const Sides = ({ productList, loading, addToCart }) => {
 const mapStateToProps = (state) => ({
   productList: state.product.productsList,
   loading: state.product.loading,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, { addToCart })(Sides);
