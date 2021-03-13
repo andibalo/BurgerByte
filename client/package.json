@@ -5,12 +5,15 @@
   "dependencies": {
     "@craco/craco": "^6.1.1",
     "@react-icons/all-files": "^4.1.0",
+    "@tailwindcss/postcss7-compat": "^2.0.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.12.3",
+    "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
     "framer-motion": "^3.7.0",
+    "postcss": "^7.0.35",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-google-recaptcha": "^2.1.0",
@@ -24,6 +27,7 @@
     "redux-thunk": "^2.3.0",
     "scrollreveal": "^4.0.7",
     "styled-components": "^5.2.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -50,10 +54,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@tailwindcss/postcss7-compat": "^2.0.3",
-    "autoprefixer": "^9.8.6",
-    "postcss": "^7.0.35",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.3"
-  }
+  "devDependencies": {}
 }
