@@ -65,7 +65,7 @@ const CreateProduct = ({ fetchProducts, history }) => {
       fetchProducts();
       setLoading(false);
 
-      history.push("/admin/products");
+      // history.push("/admin/products");
     } catch (error) {
       //console.log(error);
       setFormData({
