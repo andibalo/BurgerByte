@@ -49,7 +49,15 @@ const Register = ({
     password: "",
   });
 
-  const { email, username, password, firstName, lastName, gender } = formData;
+  const {
+    email,
+    username,
+    password,
+    firstName,
+    lastName,
+    gender,
+    dob,
+  } = formData;
 
   const handleFormChange = (e) => {
     setFormData({
@@ -61,7 +69,15 @@ const Register = ({
   const handleFormSubmit = async () => {
     //console.log(formData);
 
-    const result = await register(username, email, password);
+    const result = await register(
+      email,
+      username,
+      password,
+      firstName,
+      lastName,
+      gender,
+      dob
+    );
 
     if (result.status === "error") {
       if (result.errors) {

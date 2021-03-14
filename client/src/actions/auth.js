@@ -1,5 +1,12 @@
 import axiosInstance from "../utils/axiosInstance";
-import { SIGN_UP, IS_LOADING, LOG_IN, CURRENT_USER, LOG_OUT } from "./types";
+import {
+  SIGN_UP,
+  IS_LOADING,
+  LOG_IN,
+  CURRENT_USER,
+  LOG_OUT,
+  EMPTY_CART,
+} from "./types";
 
 export const getCurrentUser = () => async (dispatch) => {
   dispatch({
@@ -25,7 +32,15 @@ export const getCurrentUser = () => async (dispatch) => {
   }
 };
 
-export const register = (username, email, password) => async (dispatch) => {
+export const register = (
+  email,
+  username,
+  password,
+  firstName,
+  lastName,
+  gender,
+  dob
+) => async (dispatch) => {
   dispatch({
     type: IS_LOADING,
     payload: true,
@@ -33,8 +48,12 @@ export const register = (username, email, password) => async (dispatch) => {
 
   try {
     const res = await axiosInstance.post("/api/user/register", {
-      username,
+      first_name: firstName,
+      last_name: lastName,
+      gender,
+      date_of_birth: dob,
       email,
+      username,
       password,
     });
 
@@ -92,5 +111,9 @@ export const login = (email, password) => async (dispatch) => {
 export const logOut = () => (dispatch) => {
   dispatch({
     type: LOG_OUT,
+  });
+
+  dispatch({
+    type: EMPTY_CART,
   });
 };

@@ -64,7 +64,7 @@ const StyledStepTimeline = styled.div`
   }
 `;
 
-const ShoppingCart = ({ auth, emptyCart, cart, addToCart }) => {
+const ShoppingCart = ({ auth, emptyCart, cart, addToCart, username }) => {
   const containerVariants = {
     hidden: {
       x: "-100vw",
@@ -139,7 +139,12 @@ const ShoppingCart = ({ auth, emptyCart, cart, addToCart }) => {
 
   return (
     <StyledShoppingCartContainer className="bg-secondary  min-h-screen">
-      <Navbar isUserNav fixed={true} />
+      <Navbar
+        isUserNav
+        fixed={true}
+        isAuthenticated={auth.isAuthenticated}
+        username={username}
+      />
       <div className="container py-16 ">
         <StyledStepTimeline className="text-white mb-10  mt-16">
           <div className="steps-inner mx-auto relative">
@@ -284,6 +289,7 @@ const ShoppingCart = ({ auth, emptyCart, cart, addToCart }) => {
 const mapStateToProps = (state) => ({
   auth: state.auth,
   cart: state.cart,
+  username: state.auth.user?.username,
 });
 
 export default connect(mapStateToProps, { emptyCart, addToCart })(ShoppingCart);

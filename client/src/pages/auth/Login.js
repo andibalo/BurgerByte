@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import styled from "styled-components";
 import Button from "../../components/Button";
@@ -6,7 +6,11 @@ import { Input, message } from "antd";
 import { connect } from "react-redux";
 import { login } from "../../actions/auth";
 import { Redirect } from "react-router-dom";
-import ReCAPTCHA from "react-google-recaptcha";
+import {
+  loadCaptchaEnginge,
+  LoadCanvasTemplate,
+  validateCaptcha,
+} from "react-simple-captcha";
 
 const StyledRegisterContainer = styled.div`
   .main {
@@ -33,6 +37,12 @@ const Login = ({ isLoading, login, isAuthenticated, userRole, location }) => {
 
   const { email, password } = formData;
 
+  const [captchaText, setCaptchaText] = useState("");
+
+  useEffect(() => {
+    loadCaptchaEnginge(6);
+  }, []);
+
   const handleFormChange = (e) => {
     setFormData({
       ...formData,
@@ -41,6 +51,17 @@ const Login = ({ isLoading, login, isAuthenticated, userRole, location }) => {
   };
 
   const handleFormSubmit = async () => {
+    if (captchaText === "") {
+      message.warning("Please insert captcha");
+      return;
+    }
+
+    if (!validateCaptcha(captchaText)) {
+      message.warning("Captcha Does Not Match");
+      setCaptchaText("");
+      return;
+    }
+
     const result = await login(email, password);
 
     if (result.status === "error") {
@@ -110,19 +131,27 @@ const Login = ({ isLoading, login, isAuthenticated, userRole, location }) => {
                 size="large"
                 type="password"
                 value={password}
-                className="rounded-lg mb-5"
+                className="rounded-lg mb-3"
                 onChange={(e) => handleFormChange(e)}
               />
-              {/* <ReCAPTCHA
-                sitekey={process.env.REACT_APP_CAPTCHA_CLIENT_KEY}
-                onChange={onChange}
-              /> */}
+
               <Button
                 title="Login"
                 className="bg-secondary-light text-white w-full justify-center  hover:bg-secondary"
                 onClick={handleFormSubmit}
                 loading={isLoading}
               />
+              <div className="inline-block mt-5 ">
+                <LoadCanvasTemplate />
+                <Input
+                  name="captcha"
+                  placeholder="Insert Captcha Text"
+                  type="text"
+                  value={captchaText}
+                  className="rounded-lg mt-1"
+                  onChange={(e) => setCaptchaText(e.target.value)}
+                />
+              </div>
             </div>
           </div>
         </div>

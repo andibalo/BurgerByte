@@ -11,6 +11,7 @@ export default (state = initialState, action) => {
     case ADD_TO_CART:
       return payload;
     case EMPTY_CART:
+      localStorage.removeItem("cart");
       return [];
     default:
       return state;

@@ -44,7 +44,8 @@ const Drinks = ({ productList, loading, isAuthenticated, addToCart }) => {
     sr.reveal(revealSectionContent.current, srConfig());
   }, []);
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (e, product) => {
+    e.stopPropagation();
     let cart = [];
 
     if (localStorage.getItem("cart")) {
@@ -97,15 +98,15 @@ const Drinks = ({ productList, loading, isAuthenticated, addToCart }) => {
                       key={product.title}
                       className="p-8 shadow-xl "
                     >
-                      <div className="bg-secondary-light p-8 inner-card">
+                      <div className="bg-secondary-light p-8 inner-card h-full flex flex-col justify-center">
                         <div className="drinksImageCont -mt-16 ml-12">
                           <img
                             src={`/${product.images[0].image_url}`}
                             alt={product.title}
-                            className="drinksimage"
+                            className="drinksimage mx-auto"
                           />
                         </div>
-                        <div>
+                        <div className="flex-grow flex flex-col">
                           <h1 className="text-white text-center text-dosis text-bold  text-2xl mt-8 mb-2">
                             {product.title}
                           </h1>
@@ -116,17 +117,17 @@ const Drinks = ({ productList, loading, isAuthenticated, addToCart }) => {
                           <p className="text-danger font-bold text-center text-2xl mb-5">
                             {formatRupiah(product.price)}
                           </p>
-                          <div className="text-center">
+                          <div className="text-center mt-auto">
                             {isAuthenticated ? (
                               <Button
                                 title="Add To Cart"
-                                className="mt-auto"
+                                className="mx-auto"
                                 onClick={(e) => handleAddToCart(e, product)}
                               />
                             ) : (
                               <Button
                                 title="Login To Add To Cart"
-                                className="mt-auto"
+                                className="mx-auto"
                                 href={{
                                   pathname: "/login",
                                   state: {

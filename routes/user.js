@@ -60,7 +60,15 @@ router.post(
       return res.status(400).send({ status: "error", errors: errors.array() });
     }
 
-    const { username, email, password } = req.body;
+    const {
+      username,
+      email,
+      password,
+      first_name,
+      last_name,
+      gender,
+      date_of_birth,
+    } = req.body;
 
     try {
       const existingUser = await User.findOne({ email });
@@ -78,6 +86,10 @@ router.post(
         username,
         email,
         password: hashedPassword,
+        first_name,
+        last_name,
+        date_of_birth,
+        gender,
       }).save();
 
       const payload = {
@@ -97,7 +109,7 @@ router.post(
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
+      res.status(500).send({
         status: "error",
         message: error,
       });

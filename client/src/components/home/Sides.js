@@ -38,7 +38,8 @@ const Sides = ({ productList, loading, isAuthenticated, addToCart }) => {
     sr.reveal(revealSidesContent.current, srConfig());
   }, []);
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (e, product) => {
+    e.stopPropagation();
     let cart = [];
 
     if (localStorage.getItem("cart")) {
@@ -88,7 +89,7 @@ const Sides = ({ productList, loading, isAuthenticated, addToCart }) => {
                       key={product.title}
                       className="p-10 shadow-xl "
                     >
-                      <div className="bg-secondary-light p-8 inner-card flex flex-col ">
+                      <div className="bg-secondary-light p-8 inner-card  flex flex-col ">
                         <div className="burgerImageCont -mt-16 ml-12">
                           <img
                             src={`/${product.images[0].image_url}`}

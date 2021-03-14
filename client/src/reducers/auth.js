@@ -43,6 +43,7 @@ export default (state = initialState, action) => {
     case LOG_OUT:
       setAuthToken(null);
       localStorage.removeItem("token");
+
       return {
         ...state,
         user: null,

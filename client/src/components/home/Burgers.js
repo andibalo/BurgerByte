@@ -25,6 +25,8 @@ const StyledBurgerCard = styled.div`
   }
 `;
 
+const StyledModalContent = styled.div``;
+
 const Burgers = ({ products, loading, isAuthenticated, addToCart }) => {
   const [openModal, closeModal] = useModal();
 
