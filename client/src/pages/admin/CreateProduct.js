@@ -23,7 +23,7 @@ const StyledAdminContainer = styled.div`
   }
 `;
 
-const CreateProduct = ({ fetchProducts }) => {
+const CreateProduct = ({ fetchProducts, history }) => {
   const [fileList, setFileList] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -64,6 +64,8 @@ const CreateProduct = ({ fetchProducts }) => {
 
       fetchProducts();
       setLoading(false);
+
+      history.push("/admin/products");
     } catch (error) {
       //console.log(error);
       setFormData({

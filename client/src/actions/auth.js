@@ -44,12 +44,16 @@ export const register = (username, email, password) => async (dispatch) => {
       type: SIGN_UP,
       payload: res.data.data,
     });
+
+    return true;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
     dispatch({
       type: IS_LOADING,
       payload: false,
     });
+
+    return error.response.data;
   }
 };
 
@@ -71,12 +75,17 @@ export const login = (email, password) => async (dispatch) => {
       type: LOG_IN,
       payload: res.data.data,
     });
+
+    return true;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
+
     dispatch({
       type: IS_LOADING,
       payload: false,
     });
+
+    return error.response.data;
   }
 };
 
