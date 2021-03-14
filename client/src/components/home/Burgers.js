@@ -134,6 +134,7 @@ const Burgers = ({ products, loading, isAuthenticated, addToCart }) => {
                           ) : (
                             <Button
                               title="Login To Add To Cart"
+                              onClick={(e) => e.stopPropagation()}
                               href={{
                                 pathname: "/login",
                                 state: {

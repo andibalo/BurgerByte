@@ -23,6 +23,10 @@ const StyledDrinksCard = styled.div`
     width: 150px;
   }
 
+  .drinksimage {
+    max-height: 150px;
+  }
+
   .blu {
     height: 6px;
     width: 60%;
