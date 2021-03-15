@@ -79,7 +79,7 @@ const Navbar = ({
         } ${isScrolled ? "py-4" : "py-6"}`}
       >
         <div className="flex justify-between items-center">
-          <Brand logoOnly />
+          <Brand />
 
           <div className="flex items-center">
             <ul className="flex text-white items-center mr-10">

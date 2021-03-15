@@ -18,7 +18,8 @@ const Brand = ({ logoOnly, textOnly }) => {
 
         {!logoOnly && (
           <h1 className="text-2xl text-white">
-            Burger<span className="text-primary">Byte</span>
+            Website: Restoran UTS IF430 - Burger
+            <span className="text-primary">Byte</span>
           </h1>
         )}
       </Link>

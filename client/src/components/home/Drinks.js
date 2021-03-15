@@ -9,6 +9,7 @@ import sr from "../../utils/sr";
 import srConfig from "../../utils/srConfig";
 import { addToCart } from "../../actions/cart";
 import { message, Spin } from "antd";
+import resolveImageUrl from "../../utils/resolveImageUrl";
 
 const StyledDrinksCard = styled.div`
   flex: 0 0 0 50%;
@@ -101,7 +102,7 @@ const Drinks = ({ productList, loading, isAuthenticated, addToCart }) => {
                       <div className="bg-secondary-light p-8 inner-card h-full flex flex-col justify-center">
                         <div className="drinksImageCont -mt-16 ml-12">
                           <img
-                            src={`/${product.images[0].image_url}`}
+                            src={resolveImageUrl(product.images[0].image_url)}
                             alt={product.title}
                             className="drinksimage mx-auto"
                           />

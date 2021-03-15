@@ -51,7 +51,7 @@ const ProductCard = ({ product, handleDeleteProduct }) => {
   );
 
   const handleClickInfoBtn = (product) => {
-    console.log(product);
+    // console.log(product);
 
     openModal(() =>
       modalContent(product.images, product.description, product.prive)

@@ -10,6 +10,7 @@ import { Image, message, Spin } from "antd";
 import { addToCart } from "../../actions/cart";
 import sr from "../../utils/sr";
 import srConfig from "../../utils/srConfig";
+import resolveImageUrl from "../../utils/resolveImageUrl";
 
 const StyledBurgerCard = styled.div`
   flex: 0 0 50%;
@@ -148,7 +149,7 @@ const Burgers = ({ products, loading, isAuthenticated, addToCart }) => {
                         </div>
                         <div className="burgerImageCont ml-auto">
                           <img
-                            src={`/${product.images[0].image_url}`}
+                            src={resolveImageUrl(product.images[0].image_url)}
                             alt="burger1"
                             className="burgerImage"
                           />

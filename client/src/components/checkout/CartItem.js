@@ -5,6 +5,7 @@ import { AiOutlinePlus } from "@react-icons/all-files/ai/AiOutlinePlus";
 import { AiOutlineMinus } from "@react-icons/all-files/ai/AiOutlineMinus";
 import styled from "styled-components";
 import { formatRupiah } from "../../utils/formatRupiah";
+import resolveImageUrl from "../../utils/resolveImageUrl";
 
 const StyledCartItemRow = styled.tr`
   .productImage {
@@ -22,7 +23,10 @@ const CartItem = ({
   return (
     <StyledCartItemRow>
       <td className="flex items-center">
-        <img src={product.images[0].image_url} className="productImage" />
+        <img
+          src={resolveImageUrl(product.images[0].image_url)}
+          className="productImage"
+        />
         <p className="text-white ml-5">{product.title}</p>
       </td>
       <td className="text-white">
