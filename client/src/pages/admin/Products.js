@@ -36,8 +36,14 @@ const Products = (props) => {
 
   const handleDeleteProduct = async (slug, images) => {
     try {
+      let deleteUrlEndpoint;
+
       const deleteImagePromises = images.map(async (image) => {
-        return await axiosInstance.delete(`/api/image/${image.id}`);
+        deleteUrlEndpoint = image.image_url.includes("cloudinary")
+          ? `/api/cloudinary/${image.name}`
+          : `/api/image/${image.id}`;
+
+        return await axiosInstance.delete(deleteUrlEndpoint);
       });
 
       await Promise.all(deleteImagePromises);

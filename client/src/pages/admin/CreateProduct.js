@@ -7,6 +7,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { AiOutlineCamera } from "@react-icons/all-files/ai/AiOutlineCamera";
 import { connect } from "react-redux";
 import { fetchProducts } from "../../actions/product";
+import FileUpload from "../../components/FileUpload";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -135,7 +136,7 @@ const CreateProduct = ({ fetchProducts, history }) => {
       <div className="flex flex-grow">
         <AdminSidebar page="createProduct" />
         <StyledAdminContainer className="p-16 ">
-          <Upload
+          {/* <Upload
             accept="image/*"
             maxCount={3}
             listType="picture"
@@ -148,8 +149,14 @@ const CreateProduct = ({ fetchProducts, history }) => {
             >
               Upload Image
             </Button>
-          </Upload>
-
+          </Upload> */}
+          <FileUpload
+            setFormData={setFormData}
+            formData={formData}
+            setLoading={setLoading}
+            setIsImageUploaded={setIsImageUploaded}
+            loading={loading}
+          />
           <Input
             placeholder="Product Name"
             size="large"

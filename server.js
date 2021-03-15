@@ -31,7 +31,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use("/api/user", require("./routes/user"));
 app.use("/api/product", require("./routes/product"));
 app.use("/api/image", require("./routes/image"));
-
+app.use("/api/cloudinary", require("./routes/cloudinary"));
 //Serve static assest in production
 if (process.env.NODE_ENV === "production") {
   //set static folder

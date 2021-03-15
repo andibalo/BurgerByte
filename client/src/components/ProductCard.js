@@ -5,6 +5,10 @@ import { AiOutlineInfoCircle } from "@react-icons/all-files/ai/AiOutlineInfoCirc
 import { AiOutlineEdit } from "@react-icons/all-files/ai/AiOutlineEdit";
 import { AiOutlineCloseCircle } from "@react-icons/all-files/ai/AiOutlineCloseCircle";
 import { Link } from "react-router-dom";
+import resolveImageUrl from "../utils/resolveImageUrl";
+import useModal from "../hooks/useModal";
+import { formatRupiah } from "../utils/formatRupiah";
+import { Image } from "antd";
 
 const StyledProductCard = styled.div`
   min-height: 350px;
@@ -20,6 +24,40 @@ const StyledProductCard = styled.div`
 `;
 
 const ProductCard = ({ product, handleDeleteProduct }) => {
+  const [openModal, closeModal] = useModal();
+
+  const modalContent = (images, description) => (
+    <div>
+      <div className="flex justify-center">
+        <Image.PreviewGroup>
+          {images.map((image, i) => {
+            return (
+              <Image
+                width={250}
+                className="mx-auto"
+                src={resolveImageUrl(image.image_url)}
+                alt={image.name}
+              />
+            );
+          })}
+        </Image.PreviewGroup>
+      </div>
+
+      <p className="text-white text-lg mt-8">{description}</p>
+      <h3 className="text-danger text-xl mt-5">
+        {formatRupiah(product.price)}
+      </h3>
+    </div>
+  );
+
+  const handleClickInfoBtn = (product) => {
+    console.log(product);
+
+    openModal(() =>
+      modalContent(product.images, product.description, product.prive)
+    );
+  };
+
   const { title, description, category, price, images, slug } = product;
   return (
     <StyledProductCard className="bg-secondary rounded-lg shadow-xl p-5">
@@ -27,7 +65,10 @@ const ProductCard = ({ product, handleDeleteProduct }) => {
         <div className="cardContent text-center">
           {images.length > 0 ? (
             <div className="foodImageWrapper mx-auto mb-5">
-              <img src={`/${images[0].image_url}`} className="food-image" />
+              <img
+                src={resolveImageUrl(images[0].image_url)}
+                className="food-image"
+              />
             </div>
           ) : (
             <FaBeer className="block text-primary mx-auto text-6xl mb-5" />
@@ -42,7 +83,10 @@ const ProductCard = ({ product, handleDeleteProduct }) => {
           </div>
         </div>
         <div className="cardActions flex">
-          <div className="flex-grow p-3 cursor-pointer hover:bg-secondary-light rounded-lg transition">
+          <div
+            className="flex-grow p-3 cursor-pointer hover:bg-secondary-light rounded-lg transition"
+            onClick={() => handleClickInfoBtn(product)}
+          >
             <AiOutlineInfoCircle className="mx-auto text-3xl text-primary" />
           </div>
           <div className="flex-grow p-3 cursor-pointer hover:bg-secondary-light rounded-lg transition">
