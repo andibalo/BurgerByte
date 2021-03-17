@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import styled from "styled-components";
-import { Input, Select, InputNumber, Upload, message, Button } from "antd";
+import { Input, Select, InputNumber,  message, Button } from "antd";
 import axiosInstance from "../../utils/axiosInstance";
-import { AiOutlineCamera } from "@react-icons/all-files/ai/AiOutlineCamera";
 import { connect } from "react-redux";
 import { fetchProducts } from "../../actions/product";
 import FileUpload from "../../components/FileUpload";
@@ -136,20 +135,7 @@ const CreateProduct = ({ fetchProducts, history }) => {
       <div className="flex flex-grow">
         <AdminSidebar page="createProduct" />
         <StyledAdminContainer className="p-16 ">
-          {/* <Upload
-            accept="image/*"
-            maxCount={3}
-            listType="picture"
-            defaultFileList={[...fileList]}
-            {...uploadProps}
-          >
-            <Button
-              className="flex items-center"
-              icon={<AiOutlineCamera className="mr-2 text-lg" />}
-            >
-              Upload Image
-            </Button>
-          </Upload> */}
+         
           <FileUpload
             setFormData={setFormData}
             formData={formData}

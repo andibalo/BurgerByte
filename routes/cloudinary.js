@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const cloudinary = require("cloudinary");
+const { validateAdmin, validateToken } = require("../middlewares/auth");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -8,7 +9,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-//@Route        /api/image/
+//@Route        /api/cloudinary/
 //@Desc         upload an image
 //@Access       Admin
 
@@ -42,11 +43,12 @@ router.post(
   }
 );
 
-//@Route        /api/image/:id
+//@Route        /api/cloudinary/:id
 //@Desc         delete an image
 //@Access       Admin
 
-//validateToken, validateAdmin,
+//validateToken, validateAdmin
+
 router.delete("/:id", async (req, res) => {
   try {
     const image_id = req.params.id;

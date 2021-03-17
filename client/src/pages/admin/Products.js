@@ -35,6 +35,7 @@ const Products = (props) => {
   };
 
   const handleDeleteProduct = async (slug, images) => {
+    setLoading(true);
     try {
       let deleteUrlEndpoint;
 
@@ -51,6 +52,7 @@ const Products = (props) => {
       const res = await axiosInstance.delete(`/api/product/${slug}`);
 
       //console.log("Delete Product Res", res);
+
       handleFetchProducts();
     } catch (error) {
       console.log(error);

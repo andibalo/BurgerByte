@@ -16,6 +16,8 @@ import axiosInstance from "../../utils/axiosInstance";
 import { AiOutlineCamera } from "@react-icons/all-files/ai/AiOutlineCamera";
 import { AiOutlineArrowLeft } from "@react-icons/all-files/ai/AiOutlineArrowLeft";
 import { AiFillCloseCircle } from "@react-icons/all-files/ai/AiFillCloseCircle";
+import resolveImageUrl from "../../utils/resolveImageUrl";
+import FileUpload from "../../components/FileUpload";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -87,14 +89,24 @@ const EditProduct = ({ match, history }) => {
     fetchProduct();
   }, []);
 
-  const handleDeleteImg = async (id) => {
+  const handleDeleteImg = async (image) => {
     setLoading(true);
 
     try {
-      const res = await axiosInstance.delete(`/api/image/${id}`);
-      console.log("REMOVE RESPONSE", res);
+      const res = image.image_url.includes("cloudinary")
+        ? await axiosInstance.delete(`/api/cloudinary/${image.name}`)
+        : await axiosInstance.delete(`/api/image/${image.id}`);
+
+      //console.log("REMOVE RESPONSE", res);
 
       setLoading(false);
+
+      setFormData({
+        ...formData,
+        images: formData.images.filter(
+          (formImage) => formImage.image_url !== image.image_url
+        ),
+      });
     } catch (error) {
       console.log(error);
 
@@ -204,34 +216,35 @@ const EditProduct = ({ match, history }) => {
                 icon={<AiOutlineArrowLeft className="text-lg" />}
               />
             </div>
-            <Image.PreviewGroup>
-              {formData.images &&
-                formData.images.length > 0 &&
-                formData.images.map((image) => (
-                  <div className="relative inline-block ">
-                    <Image width={200} src={`/${image.image_url}`} />
-                    <button onClick={() => handleDeleteImg(image.id)}>
-                      <AiFillCloseCircle className="text-2xl text-danger absolute  deleteImageIcon" />
-                    </button>
-                  </div>
-                ))}
-            </Image.PreviewGroup>
-            <Upload
-              className="block mt-5"
-              accept="image/*"
-              maxCount={3}
-              listType="picture"
-              defaultFileList={[...fileList]}
-              {...uploadProps}
-            >
-              <AntButton
-                className="flex items-center"
-                icon={<AiOutlineCamera className="mr-2 text-lg" />}
-              >
-                Upload Image
-              </AntButton>
-            </Upload>
+            <div className="mb-3">
+              <Image.PreviewGroup>
+                {formData.images &&
+                  formData.images.length > 0 &&
+                  formData.images.map((image) => (
+                    <div
+                      className="relative inline-block "
+                      key={image.image_url}
+                    >
+                      <Image
+                        width={200}
+                        src={resolveImageUrl(image.image_url)}
+                      />
+                      <button onClick={() => handleDeleteImg(image)}>
+                        <AiFillCloseCircle className="text-2xl text-danger absolute  deleteImageIcon" />
+                      </button>
+                    </div>
+                  ))}
+              </Image.PreviewGroup>
+            </div>
 
+            <FileUpload
+              setFormData={setFormData}
+              formData={formData}
+              setLoading={setLoading}
+              setIsImageUploaded={setIsImageUploaded}
+              loading={loading}
+              displayImageRow={false}
+            />
             <Input
               placeholder="Product Name"
               size="large"

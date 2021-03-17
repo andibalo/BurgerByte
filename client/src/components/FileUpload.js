@@ -4,6 +4,7 @@ import axios from "axios";
 import { Image, Badge, message, Spin } from "antd";
 import axiosInstance from "../utils/axiosInstance";
 import { AiFillCamera } from "@react-icons/all-files/ai/AiFillCamera";
+import resolveImageUrl from "../utils/resolveImageUrl";
 
 const FileUpload = ({
   formData,
@@ -11,6 +12,7 @@ const FileUpload = ({
   setLoading,
   setIsImageUploaded,
   loading,
+  displayImageRow = true,
 }) => {
   const uploadedImagesUri = [];
 
@@ -30,7 +32,7 @@ const FileUpload = ({
           100,
           0,
           async (uri) => {
-            console.log(uri);
+            //console.log(uri);
 
             try {
               const res = await axiosInstance.post(
@@ -38,7 +40,7 @@ const FileUpload = ({
                 { image: uri }
               );
 
-              console.log(res);
+              //console.log(res);
 
               uploadedImagesUri.push({
                 name: res.data.public_id,
@@ -85,7 +87,8 @@ const FileUpload = ({
   return (
     <>
       <div>
-        {images &&
+        {displayImageRow &&
+          images &&
           images.map((image) => (
             <Badge
               count="X"
@@ -94,7 +97,7 @@ const FileUpload = ({
               onClick={() => handleRemoveImage(image.name)}
               style={{ cursor: "pointer" }}
             >
-              <Image width={200} src={image.image_url} />
+              <Image width={200} src={resolveImageUrl(image.image_url)} />
             </Badge>
           ))}
       </div>
